@@ -1,0 +1,75 @@
+
+* Plan of action for C II
+
+** Effect of illuminating spectrum
++ We have the comparison between the Trapezium region and the th2A region for Orion
++ 
+
+* Previous notes from other projects
+These are just copied verbatim here
+
+** orion-muse.org
+*** Random thoughts on permitted lines
+:LOGBOOK:
+CLOCK: [2017-01-05 Thu 13:05]--[2017-01-09 Mon 19:46] => 102:41
+:END:
++ Good discussion in Sharpee et al 2004
+  + Turns out that the C II 7231, 7236 lines are already expected to be 50% fluorescence
+    + At least according to Grandi (1976)
+    + This is multiplet V3
+  + Description of morphology of the fluorescent contribution is hidden away in [[id:347AC3EE-D131-4BEF-9A94-71DC9FFFD199][{10/10} Perform line extraction, fuzzing, binning, multimapping all on linux server]]
+  + The best C II line is V6 4267, which we don't have
+  + The pure recomb lines that we /do/ have are
+    + 4620.11 V17.08 - clean bit of spectrum but very weak
+    + 4802.740 - messy blend with N II and possibly [Co II]
+    + 5342.40 V17.06 - clean but weak
+    + 6151.43 V16.04 - stronger than the others, more or less clean, except for O I 6156 on the red side
+    + 6461.95 V17.04 - strongest so far and clean
+    + 7519.49 - not in Sharpee, sky contam but subtractable
+  + So best bet seems to be 6461.95
+*** DONE [#A] [10/10] Perform line extraction, fuzzing, binning, multimapping all on linux server
+CLOSED: [2015-11-09 Mon 19:46]
+:PROPERTIES:
+:ID:       347AC3EE-D131-4BEF-9A94-71DC9FFFD199
+:END:
+:LOGBOOK:
+- Note taken on [2015-11-09 Mon 19:46] \\
+  This took forever!
+:END:
+...
+*Lots of steps*
+...
+9. Do multibin combination for the ratios at constant s/n
+   - [X] Pilot study for selected ratios.  Highlights are:
+     - C II 7236 / H\alpha 6563 - shows wonderful swirls, presumably where thet fluorescent excitation of the C II line is highest, which should trace the inner edge of dense ionized gas in the nebula.  This has peaks (from inside to outside) at the LV bowshocks; at the *Ney-Allen Nebula*; at the filament behind LV6; /possibly/ the 177-341 bowshock; in a *270 degree shell* that starts in front of 177-341 and curves round to W past 159-350 shocks, then runs NW parallel to the SW lane (and yes, that is an extinction feature, the superposition may be conicidental), then bends to the E to run along just inside the high-ionization inner arm of the E-W bar (of course the appearance of a 270 deg shell may be illusory); then the E side of the *Big Arc*, which is the largest scale feature (to the W it becoes less prominent, which coincides in PA with where the inner 270 deg shell gets brighter - maybe it is blocking it); then finally, around \theta2A.  There is also a dip at the Bright Bar i-front, which must be due the C++/C+ transition
+   
+*** Extract from basic-line-list.tab
++ /Note added [2021-11-24 Wed]/
+  + I have included other lines that are within 1 or 2 Angstrom of the C II lines
+#+name: cii-line-list
+| Ion      | Class |     wav0 | strength | blue cont | red cont | comment                      |
+|----------+-------+----------+----------+-----------+----------+------------------------------|
+| C II     | P     |  4620.11 |        6 |         1 |        1 | *** also 4620.26, pure recom |
+| C II     | P     | 4802.740 |        5 |         1 |        0 | *** blend but pure recom     |
+| N II     | P     | 4803.287 |        4 |         1 |        1 | blend [Co II] 4802.36        |
+| C II     | P     |  5121.82 |        7 |         1 |        1 | ***                          |
+| C II     | P     |  5342.40 |        6 |         0 |        1 | *** V17.06 pure recom        |
+| C II     | P     |  5889.78 |        4 |         1 |        0 | Na I sky blend, V5           |
+| C II     | P     |  6151.43 |        5 |         1 |        0 | V16.04, pure recomb          |
+| O I      | L     |  6155.98 |        6 |         0 |        1 | * blend with Ni II 6157.42   |
+| C II     | P     |  6257.18 |        7 |         1 |        0 | *** V10.03 + O I ?           |
+| C II     | P     |  6259.56 |        7 |         0 |        1 | *** V10.03, pure recomb      |
+| C II     | P     |  6461.95 |        6 |         1 |        1 | V17.04 Pure recomb           |
+| C II     | P     |  6578.05 |        5 |         1 |        0 | Blue 6583.45 dominates       |
+| [N II]   | L     |  6583.45 |        2 |         1 |        1 |                              |
+| C II     | D     |  6779.94 |        7 |         1 |        0 | *** +6780.60 DIELEC          |
+| C II     | D     |  6787.22 |        7 |         1 |        1 | ***                          |
+| C II     | P     |  6812.28 |        7 |         0 |        1 | *** or [Ni II] 6813.57 ?     |
+| C II     | P     |  7231.34 |        3 |         1 |        0 | V3 - 50% fluorescence        |
+| C II     | P     |  7236.42 |        3 |         0 |        1 | 7236.42 + 7237.17            |
+| O II     | P     | 7369.029 |        6 |         1 |        0 | blend C II 7370.0            |
+| C II     | P     |  7519.49 |        6 |         1 |        0 | Plus Sky at 7524             |
+| [Cl IV]  | U     |  7530.80 |        5 |         0 |        1 | blend C II 7530.57           |
+
+
+

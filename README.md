@@ -1,9 +1,12 @@
 # Permitted optical lines of C II
 
 Study of interplay of recombination and fluorescence in the excitation of the optical permitted lines of C II:
-+ 7231, 7236: recomb + fluorescence
-+ 6461.95: pure recombination
-+ 6578: next to strong [N II] line
+  * 7231, 7236: recomb + fluorescence
+  * 6461.95: pure recombination
+  * 6578: next to strong [N II] line
+      * Subtract using the other [N II] line
+  * 6779,80: dielectronic recombination, but very weak
+      * Could maybe give a temperature diagnostic
 
 May include the following datasets:
   * Spatially resolved linemaps of Orion with MUSE
