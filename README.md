@@ -13,3 +13,7 @@ May include the following datasets:
   * UVES spectra of Orion HH objects
   * Manu's PPAK observations (in particular, map of 4267)
   * Other MUSE datasets: 30 Dor, NGC 346
+
+## Documentation
+
+  * [docs/cii-permitted.org](docs/cii-permitted.org)

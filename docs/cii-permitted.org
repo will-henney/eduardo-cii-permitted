@@ -1,12 +1,92 @@
 
 * Plan of action for C II
 
-** Effect of illuminating spectrum
-+ We have the comparison between the Trapezium region and the th2A region for Orion
-+ 
+
+** General things to look at
+*** Effect of illuminating spectrum
++ We have the comparison between the Trapezium region and the \theta^2 A region for Orion
++ Comparison with other H II regions?
+*** What is revealed by the fluorescent distribution of C II in Orion?
++ Interior surface of the warm ionized gas
+  + Bounded inside by the shocked stellar wind?
++ Comparison with high-ionization lines
+  + [Cl IV] 8045.62
+    + Also 7530.80 but that overlaps C II 7530.57
+  + [Ar IV] 4740.17
+    + Also 4711.37 but that overlaps with He I 4713.14
++ Proplyd bow shocks
+  + LV1, LV2, etc
++ Kinematics?
+  + Are the C II lines good enough s/n to measure this?
+*** Comparison with other fluorescent lines
++ O I and N I trace the near PDR
++ Si II has a diversity of distributions
+  + This is the same electron configuration as C II, but n=3 instead of n=2
+    + The wavelengths of equivalent transitions (so with n higher by 1 in Si II) tend to be shorter in Si II than C II by about 30%
+    + Si II 4p \to 4d \lambda5041, 5056 is equivalent of C II 3p \to 3d 7231, 7236
+    + Si II 4s \to 4p \lambda6347, 6371 is equivalent of C II 3s \to 3p 6578, 6583
+    + Si II 4p \to 5s \lambda5958, 5979 is equivalent of C II 3p \to 4s 3919, 3921
+    + Si II 5p \to 6d \lambda6818, 6830 is equivalent to C II 4p \to 5d 6257
+      + But 6818 is not detected and 6830 overlaps with He I 6827.97
+  + We don't seem to detect any of the pure recombination lines of Si II
+    + 4f \to 6g at 6240 is same levels as C I 6460 (but not really equivalent, since we should use 1 higher n for Si II), but we do not detect it (presumably because of the low Si abundance)
+    + 4d \to 5f at 7849, 7850 is equivalent of C II 4267, but we do not detect it
++ O II might have a fluorescent contribution, which could be relevant to ADF
+
+** Atomic structure of C II (and Si II) 
+
+*** Relevant papers
++ [[https://ui.adsabs.harvard.edu/abs/2012MNRAS.426.2318E/abstract][Escalante:2012a]]
+  + Excitation of emission lines by fluorescence and recombination in IC 418
+  + V. Escalante, C. Morisset and L. Georgiev
+
+
+*** Ground configuration
++ 5 electrons
++ 1s^2 2s^2 (^{2}S) 2p .^{2}P^o
+  + Excitations of this give doublet manifold of excited states 2s^2 n\ell .^{2}L
++ Also, excited core metastable state:
+  + 1s^2 2s 2p^2 .^{4}P
+  + I think the lines marked as DR come from excited quartet terms
++ And doubly excited core
+  + 1s^2 2p^3 .^{2}P^o
+  + Has transitions to 1s^2 2s 2p (^{3}P^o) n\ell
+    + At least this is what the Atomic Line List says
+    + The Escalante paper says 1s^2 2s 2p (^{1}D^o) n\ell (for instance 3p)
+
+
+*** Relevant excited levels
++ lower \to upper
++ 7231, 7236
+  + 3p .^{2}P^o \to 3d .^{2}D
++ 6578, 6583
+  + 3s .^{2}S \to 3p .^{2}P^o
++ 6257, 6260
+  + 4p .^{2}P^o \to 5d .^{2}D
++ 6460 (recomb)
+  + 4f .^{2}F^o \to 6g .^{2}G (L = 4)
++ 4267 (recomb, mainly)
+  + 3d .^{2}D \to 4f .^{2}F^o (L = 3)
+*** What are the relevant pumping lines?
++ 7231, 7236 can have their upper level directly pumped from the ground
+  + 2p .^{2}P^o \to 3d .^{2}D : 687 \AA
+    #+begin_example
+          : -LAB-WAVL-ANG-VAC-|-SPC--|TT|--------CONFIGURATION--------|-TERM--|-J_i-J_k-|--A_ki---|-TPF-|--LVL-EN--CM-1---|-REF---|
+          :     687.0526        C II  E1         2s2.2p-2s2.3d         2Po-2D  1/2 - 3/2 2.400e+09    24  0.00 - 145549.27 ASD	  
+          :     687.3453        C II  E1         2s2.2p-2s2.3d         2Po-2D  3/2 - 5/2 2.880e+09    24 63.42 - 145550.70 ASD
+          :     687.3521        C II  E1         2s2.2p-2s2.3d         2Po-2D  3/2 - 3/2 4.810e+08    24 63.42 - 145549.27 ASD
+    #+end_example
++ 6578 should mainly be populated by the same route
+  + But also via 4s
 
 * Previous notes from other projects
-These are just copied verbatim here
+These are just copied verbatim here.
+
+Also, general notes on permitted lines can be found in:
++ [[file:../../Orion-HH/muse-oii-permitted.org]]
++ [[file:../../Metal-Permitted/metal-permitted.org]]
+
+
 
 ** orion-muse.org
 *** Random thoughts on permitted lines
@@ -73,3 +153,122 @@ CLOSED: [2015-11-09 Mon 19:46]
 
 
 
+
+
+
+
+** muse-oii-permitted.org
+*** TODO Permitted lines
++ Extract O II and C II lines from MUSE
++ For the O II lines, we need to isolate the 4649 blend
++ For C II pure recomb lines 
+  + We have 4620 supposedly ?!
+    + Very weak and there may be another line at 4621
+  + Also 4803 but blended with N II and [Co II]
+  + 5342.40 - very weak
+  + 6151.43 - might be good
+  + 6461.96 - weak but should be clear
+    + This is definitely the best bet for C II lines
+    + Escalante:2012a have it being all recombination
+    + Whereas 7231 and 7236 are 20 to 40% fluorescent in IC 418
++ N II lines
+  + These are generally weak and must be a mixture of recombination and fluorescence
++ Si II lines
+  + These are much stronger, also mixture
++ More O II lines from Manu/Adal
+  + 4609, 4610 - Escalante:2012a says is 100% recombination
+    + Terms are in LK coupling scheme
+      + 3d 2D5/2–4f F[4]o7/2
+      + 3d 2D3/2–4f F[2]o5/2
+    + Unfortunately, there is an [Fe III] line at 4607
+    + Also N II 4607 but that is weaker
+    + 4607 to 4610 are blended in Manu and MUSE
+    + The O II lines are well separated from [Fe III] in Adal
+    + Discussed further below
+  + 4596
++ [ ] Excitation of O II V1
+  + Multiplet (quartet) is 3s ^4P \to 3p ^4D
+    + Storey:2017a has more rigorous terminology
+    + But backwards: UPPER \to LOWER
+    + 2s^{2} 2p^{2}(.^{3}P) 3p .^{4}D_{o} \to  2s^{2} 2p^{2}(.^{3}P) 3s .^{4}P_{e}
+    + ~2s22p2(3P)3p 4Do    -   2s22p2(3P)3s 4Pe~
+    + E.g., 4649.13 is index 8790
+  + Ground state is 2p3 ^4S
+    + Resonant absorption 2p3 ^4S \to 3d ^4P (429.650 \to 429.716 \AA)
+      + so that is 2.12 Rydbergs
+    + Followed by decay to 3p terms
+    + Need to make a diagram and work out if it is feasible
+  + Velocity gradients in Big Arc will tend to make fluorescence more efficient
+  + Interestingly, the analogous N I multiplet is at 8680-8719
+    + N I and O II are identical in electron configuration
+    + We see all these lines nicely in the MUSE data
+    + They are all at least 95% fluoresced
+    + [ ] We could look at the equivalent of the 3d-4f lines in N I
++ Case of the 3d-4f lines
+  + These should not have a fluorescent component
+    + /except that maybe they might if intercombination lines are important/
+  + But they give the same abundances as the other lines (in Eduardo HH 529 data)
+  + Strongest lines:
+    + 4303.8: I \approx 0.63e-4 Hb  (Escalante:2013a)
+      + Compare with 4649 \approx 6.7e-4 Hb
+        + ODell:2010a have 4959/Hb = 0.7 to 1.0 in slits 10 and 11, which cover area of Adal's slit 6
+        + Adal has 4649/4959 = 10 \to 12 times 1e-4
+        + Eduardo (cut 2) has I(4649.13) = 11.4 in nebula and 24 in shock !!
+      + Eduardo 4959/Hb in cut 2
+        + 1.15 in nebula
+        + 1.67 in shock
+      + Seen in Manu data - about 5 times weaker than 4317 and 4320 (3s ^4P - 3p ^4P)
+        + Which are themselves about 4 times weaker than V1
+        + E.g., Manu has 4649 = 1.13 x cont
+        + I(4304) = 0.01 x cont, so 13 x weaker than 4649 => I(4304) = 0.77 1e-4 I(Hb)
+        + Within the errors, this is consistent with Escalante predicted, especially if we add in the 4303.5 contribution: 0.09 + 0.63 = 0.72
+      + Observed in Eduardo: I = 2.0 (cut 3) and 2.1 (cut 2 neb), and 4.6 (cut 2 shock) !!!
+    + 4277 complex
+      + Strongest component: 4275.5 with predicted I = 0.84
+        + Blended with [Fe II] 4276.84 in Manu
+        + Observed in Eduardo with observed I = 1.6
+    + 4609.3: predicted I \approx 0.66e-4 Hb  (Escalante:2013a)
+      + Also, weaker component at 4610.2
+      + Seen in Manu, but blend with [Fe III] 4607
+      + Very well isolated in Adal: I(4609) = 1e-4 I(4959)
+      + So this has observed intensity that maybe is slightly higher than predicted (by about 30%)
++ What states can we have
+  + 3 outer electrons
+  + Ground state is 2p^3 ^4S
+    + 2S+1 = 4 => S = 3/2 so all 3 spins are aligned
+    + L=0 so J = 3/2
+  + Pumped state: one electron goes from 2p \to 3d
+    + L = 0 \to 1 for E1 transition so must be a ^4P state
+    + In fact *only* ^4P levels can be directly pumped from ground
+      + At least I would have thought, although Escalante also mention ^4S \to ^4D transition, which has \Delta L = 2, so must be quadrupole
+    + So 2p^2 3d ^4P has L=1, S=3/2, J= 5/2, 3/2, 1/2
+  + If we pump the 3d .^{4}P level then we need the transition
+    + 3d .^{4}P_{e} \to 3p .^{4}D_{o} in order to populate the upper level of V1
+    + Storey has the following components:
+      |  IND |     wav | 2JI | 2JF | Other         | Manu  |
+      |------+---------+-----+-----+---------------+-------|
+      | 8494 | 3864.13 |   1 |   1 | Si II 3863    | Blend |
+      | 8493 | 3872.44 |   1 |   3 | [Ne III] 3869 |       |
+      | 8515 | 3874.09 |   3 |   1 | He I 3878     |       |
+      | 8514 | 3882.45 |   3 |   3 | H I 3889      | ?     |
+      | 8566 | 3893.52 |   5 |   3 | H I 3889      |       |
+      | 8513 | 3896.30 |   3 |   5 |               | faint |
+      | 8565 | 3907.45 |   5 |   5 |               | yes   |
+      | 8564 | 3926.58 |   5 |   7 | He I 3927     |       |
+    + Unfortunately, most will be blended with other lines
+  + We should also get another route down via 3p .^{4}S:
+    + 3d .^{4}P_{e} \to 3p .^{4}S_{o} followed by 3p .^{4}S_{o} \to 3s .^{4}P_{e}
+      + which ends at same lower level as V1
+    + 3d .^{4}P_{e} \to 3p .^{4}S_{o} or ~2s22p2(3P)3d 4Pe    -   2s22p2(3P)3p 4So~
+      |  IND |     wav | 2JI | 2JF | Other                    | Manu   | MUSE   | Adal              |
+      |------+---------+-----+-----+--------------------------+--------+--------+-------------------|
+      | 8489 | 4890.86 |   1 |   3 | [Fe II] 4890             | Blend? | Blend? | weak but resolved |
+      | 8507 | 4906.83 |   3 |   3 | [Fe II] 4905             | Blend? | Blend  | Weak              |
+      | 8559 | 4924.53 |   5 |   3 | He I 4922, [Fe III] 4925 | Blend? | No     | Possibly          |
+    + 3p .^{4}S_{o} \to 3s .^{4}P_{e} or ~2s22p2(3P)3p 4So    -   2s22p2(3P)3s 4Pe~
+      |  IND |     wav | 2JI | 2JF | Other       | Manu |
+      |------+---------+-----+-----+-------------+------|
+      | 8730 | 3712.74 |   3 |   1 | H I 3712    | No   |
+      | 8729 | 3727.32 |   3 |   3 | [O II] 3726 | No   |
+      | 8728 | 3749.48 |   3 |   5 | H I 3750    | No   |
+    + So this is the *cursed multiplet* - no chance of ever seeing it
