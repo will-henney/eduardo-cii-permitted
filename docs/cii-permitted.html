@@ -1,0 +1,1602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2021-11-26 Fri 10:00 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="William Henney" />
+<style type="text/css">
+<!--/*--><![CDATA[/*><!--*/
+/* 18 Jan 2016: Modified from the stylesheet by Zhitao Gong on
+https://github.com/gongzhitaao/orgcss/
+ */
+
+body {
+    max-width: 100%;
+    margin: 1% 1%;
+    font: normal normal normal 16px/1.6em 'Open Sans', sans-serif;
+    color: #333;
+}
+
+@media all and (min-width: 95ex) {
+    body {
+        max-width: 95ex;
+        margin: 1% auto;
+    }
+
+    .creator {
+        float: right;
+    }
+}
+
+@media not all and (min-width: 110ex) {
+
+    .creator {
+        float: left;
+    }
+
+    p img {
+        width: 95%;
+    }
+}
+
+.title {
+    padding: .5em 0;
+    text-align: center;
+    color: black;
+}
+
+.subtitle {
+    font-size: medium;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: center;
+}
+
+.abstract {
+    width: 80%;
+    margin: auto;
+    font-style: italic;
+}
+
+.abstract p:last-of-type:before {
+    content: "    ";
+    white-space: pre;
+}
+
+.status {
+    font-size: 90%;
+    margin: 2em auto;
+}
+
+[class^="section-number-"] {
+    margin-right: .5em;
+}
+
+#footnotes {
+    font-size: 90%;
+}
+
+.footpara {
+    display: inline;
+    margin: .2em auto;
+}
+
+.footdef {
+    margin-bottom: 1em;
+}
+
+.footdef sup {
+    padding-right: .5em;
+}
+
+a {
+    color: #527d9a;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #003355;
+    border-bottom: 1px dotted;
+}
+
+p img {
+    vertical-align: middle;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    color: #A5573E;
+    line-height: 1.6em;
+    font-family: 'Droid Serif', serif;
+}
+
+h4,h5,h6 {
+    font-size: 1em;
+}
+
+table {
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+thead {
+    border-bottom: 2px solid;
+}
+
+table td + td, table th + th {
+    border-left: 1px solid gray;
+}
+
+table tr {
+    border-top: 1px solid lightgray;
+}
+
+td,th {
+    padding: 5px 10px;
+    vertical-align: middle;
+}
+
+code {
+    padding: 2px 5px;
+    margin: auto 1px;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    background-clip: padding-box;
+    color: #333;
+    font-size: 90%;
+}
+
+blockquote {
+    margin: 1em 2em;
+    padding-left: 1em;
+    border-left: 3px solid #ccc;
+}
+
+kbd {
+    background-color: #f7f7f7;
+    font-size: 14px;
+    margin: 0 .1em;
+    padding: .1em .6em;
+}
+
+.figure {
+    padding: 1em;
+}
+
+.figure p {
+    text-align: center;
+}
+
+.todo {
+    color: red;
+    font-family: monospace;
+}
+
+.done {
+    color: green;
+    font-family: monospace;
+}
+
+.priority {
+    color: orange;
+    font-family: monospace;
+}
+
+.tag {
+    background-color: #eee;
+    font-family: monospace;
+    font-size: 80%;
+    font-weight: normal;
+    padding: 2px;
+}
+
+.timestamp {
+    color: #bebebe;
+}
+
+.timestamp-kwd {
+    color: #5f9ea0;
+}
+
+.org-right {
+    margin-left: auto;
+    margin-right: 0px;
+    text-align: right;
+}
+
+.org-left {
+    margin-left: 0px;
+    margin-right: auto;
+    text-align: left;
+}
+
+.org-center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+#postamble p, #preamble p {
+    font-size: 90%;
+    margin: .2em;
+}
+
+p.verse {
+    margin-left: 3%;
+}
+
+pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    font-family: monospace;
+    margin: 1.2em;
+    padding: 8pt;
+}
+
+pre.src {
+    overflow: auto;
+    padding-top: 1.2em;
+    position: relative;
+    font-size: 90%;
+    color: #dcdccc;
+    background-color: #3f3f3f; 
+}
+
+pre.src:before {
+    background-color: gray;
+    border: 1px solid black;
+    display: none;
+    padding: 3px;
+    position: absolute;
+    right: 10px;
+    /* top: -10px; */
+}
+
+pre.src:hover:before {
+    display: inline;
+}
+
+pre.src-sh:before {
+    content: 'sh';
+}
+pre.src-bash:before {
+    content: 'bash';
+}
+pre.src-emacs-lisp:before {
+    content: 'Emacs Lisp';
+}
+pre.src-R:before {
+    content: 'R';
+}
+pre.src-python:before {
+    content: 'Python';
+}
+pre.src-org:before {
+    content: 'Org';
+}
+pre.src-c++:before {
+    content: 'C++';
+}
+pre.src-c:before {
+    content: 'C';
+}
+pre.src-html:before {
+    content: 'HTML'
+}
+
+caption.t-above {
+    caption-side: top;
+}
+
+caption.t-bottom {
+    caption-side: bottom;
+}
+
+th.org-right {
+    text-align: center;
+}
+
+th.org-left {
+    text-align: center;
+}
+
+th.org-center {
+    text-align: center;
+}
+
+td.org-right {
+    text-align: right;
+}
+
+td.org-left {
+    text-align: left;
+}
+
+td.org-center {
+    text-align: center;
+}
+
+dt {
+    font-weight: bold;
+}
+
+.inlinetask {
+    background: #ffffcc;
+    border: 2px solid gray;
+    margin: 10px;
+    padding: 10px;
+}
+
+#org-div-home-and-up {
+    font-size: 70%;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.linenr {
+    font-size: smaller;
+}
+
+.code-highlighted {
+    background-color: #ffff00;
+}
+
+#bibliography {
+    font-size: 90%;
+}
+
+#bibliography table {
+    width: 100%;
+}
+
+/* .org-info-js_info-navigation { */
+/*     border-style: none; */
+/* } */
+/* #org-info-js_console-label { */
+/*     font-size: 10px; */
+/*     font-weight: bold; */
+/*     white-space: nowrap; */
+/* } */
+/* .org-info-js_search-highlight { */
+/*     background-color: #ffff00; */
+/*     color: #000000; */
+/*     font-weight: bold; */
+/* } */
+/*]]>*/-->
+</style>
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org63d2872">1. Plan of action for C II</a>
+<ul>
+<li><a href="#org2c74983">1.1. General things to look at</a>
+<ul>
+<li><a href="#org1bb3f4b">1.1.1. Effect of illuminating spectrum</a></li>
+<li><a href="#org30f07cd">1.1.2. What is revealed by the fluorescent distribution of C II in Orion?</a></li>
+<li><a href="#org5625005">1.1.3. Comparison with other fluorescent lines</a></li>
+</ul>
+</li>
+<li><a href="#orgd2b05b6">1.2. Atomic structure of C II (and Si II)</a>
+<ul>
+<li><a href="#org8c451ca">1.2.1. Relevant papers</a></li>
+<li><a href="#org6a021ad">1.2.2. Ground configuration</a></li>
+<li><a href="#org7cde082">1.2.3. Relevant excited levels</a></li>
+<li><a href="#org59a6649">1.2.4. What are the relevant pumping lines?</a></li>
+<li><a href="#org7f581f6">1.2.5. Recombination contribution to spectrum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org00afede">2. Previous notes from other projects</a>
+<ul>
+<li><a href="#orgae363bb">2.1. orion-muse.org</a>
+<ul>
+<li><a href="#orga3cf30d">2.1.1. Random thoughts on permitted lines</a></li>
+<li><a href="#orgeb079ac">2.1.2. <span class="done DONE">DONE</span> <code>[10/10]</code> Perform line extraction, fuzzing, binning, multimapping all on linux server</a></li>
+<li><a href="#org51b2884">2.1.3. Extract from basic-line-list.tab</a></li>
+</ul>
+</li>
+<li><a href="#orgf9f0632">2.2. muse-oii-permitted.org</a>
+<ul>
+<li><a href="#org1070ea2">2.2.1. <span class="todo TODO">TODO</span> Permitted lines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org63d2872" class="outline-2">
+<h2 id="org63d2872"><span class="section-number-2">1</span> Plan of action for C II</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org2c74983" class="outline-3">
+<h3 id="org2c74983"><span class="section-number-3">1.1</span> General things to look at</h3>
+<div class="outline-text-3" id="text-1-1">
+</div>
+<div id="outline-container-org1bb3f4b" class="outline-4">
+<h4 id="org1bb3f4b"><span class="section-number-4">1.1.1</span> Effect of illuminating spectrum</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<ul class="org-ul">
+<li>We have the comparison between the Trapezium region and the &theta;<sup>2</sup> A region for Orion</li>
+<li>Comparison with other H II regions?</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org30f07cd" class="outline-4">
+<h4 id="org30f07cd"><span class="section-number-4">1.1.2</span> What is revealed by the fluorescent distribution of C II in Orion?</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<ul class="org-ul">
+<li>Interior surface of the warm ionized gas
+<ul class="org-ul">
+<li>Bounded inside by the shocked stellar wind?</li>
+</ul></li>
+<li>Comparison with high-ionization lines
+<ul class="org-ul">
+<li>[Cl IV] 8045.62
+<ul class="org-ul">
+<li>Also 7530.80 but that overlaps C II 7530.57</li>
+</ul></li>
+<li>[Ar IV] 4740.17
+<ul class="org-ul">
+<li>Also 4711.37 but that overlaps with He I 4713.14</li>
+</ul></li>
+</ul></li>
+<li>Proplyd bow shocks
+<ul class="org-ul">
+<li>LV1, LV2, etc</li>
+</ul></li>
+<li>Kinematics?
+<ul class="org-ul">
+<li>Are the C II lines good enough s/n to measure this?</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5625005" class="outline-4">
+<h4 id="org5625005"><span class="section-number-4">1.1.3</span> Comparison with other fluorescent lines</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<ul class="org-ul">
+<li>O I and N I trace the near PDR</li>
+<li>Si II has a diversity of distributions
+<ul class="org-ul">
+<li>This is the same electron configuration as C II, but n=3 instead of n=2
+<ul class="org-ul">
+<li>The wavelengths of equivalent transitions (so with n higher by 1 in Si II) tend to be shorter in Si II than C II by about 30%</li>
+<li>Si II 4p &rarr; 4d &lambda;5041, 5056 is equivalent of C II 3p &rarr; 3d 7231, 7236</li>
+<li>Si II 4s &rarr; 4p &lambda;6347, 6371 is equivalent of C II 3s &rarr; 3p 6578, 6583</li>
+<li>Si II 4p &rarr; 5s &lambda;5958, 5979 is equivalent of C II 3p &rarr; 4s 3919, 3921</li>
+<li>Si II 5p &rarr; 6d &lambda;6818, 6830 is equivalent to C II 4p &rarr; 5d 6257
+<ul class="org-ul">
+<li>But 6818 is not detected and 6830 overlaps with He I 6827.97</li>
+</ul></li>
+</ul></li>
+<li>We don't seem to detect any of the pure recombination lines of Si II
+<ul class="org-ul">
+<li>4f &rarr; 6g at 6240 is same levels as C I 6460 (but not really equivalent, since we should use 1 higher n for Si II), but we do not detect it (presumably because of the low Si abundance)</li>
+<li>4d &rarr; 5f at 7849, 7850 is equivalent of C II 4267, but we do not detect it</li>
+</ul></li>
+</ul></li>
+<li>O II might have a fluorescent contribution, which could be relevant to ADF</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd2b05b6" class="outline-3">
+<h3 id="orgd2b05b6"><span class="section-number-3">1.2</span> Atomic structure of C II (and Si II)</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-org8c451ca" class="outline-4">
+<h4 id="org8c451ca"><span class="section-number-4">1.2.1</span> Relevant papers</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li><a href="https://ui.adsabs.harvard.edu/abs/2012MNRAS.426.2318E/abstract">Escalante:2012a</a>
+<ul class="org-ul">
+<li>Excitation of emission lines by fluorescence and recombination in IC 418</li>
+<li>V. Escalante, C. Morisset and L. Georgiev</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org6a021ad" class="outline-4">
+<h4 id="org6a021ad"><span class="section-number-4">1.2.2</span> Ground configuration</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<ul class="org-ul">
+<li>5 electrons</li>
+<li>1s<sup>2</sup> 2s<sup>2</sup> (<sup>2</sup>S) 2p .<sup>2</sup>P<sup>o</sup>
+<ul class="org-ul">
+<li>Excitations of this give doublet manifold of excited states 2s<sup>2</sup> n&ell; .<sup>2</sup>L</li>
+</ul></li>
+<li>Also, excited core metastable state:
+<ul class="org-ul">
+<li>1s<sup>2</sup> 2s 2p<sup>2</sup> .<sup>4</sup>P</li>
+<li>I think the lines marked as DR come from excited quartet terms</li>
+</ul></li>
+<li>And doubly excited core
+<ul class="org-ul">
+<li>1s<sup>2</sup> 2p<sup>3</sup> .<sup>2</sup>P<sup>o</sup></li>
+<li>Has transitions to 1s<sup>2</sup> 2s 2p (<sup>3</sup>P<sup>o</sup>) n&ell;
+<ul class="org-ul">
+<li>At least this is what the Atomic Line List says</li>
+<li>The Escalante paper says 1s<sup>2</sup> 2s 2p (<sup>1</sup>D<sup>o</sup>) n&ell; (for instance 3p)</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org7cde082" class="outline-4">
+<h4 id="org7cde082"><span class="section-number-4">1.2.3</span> Relevant excited levels</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<ul class="org-ul">
+<li>lower &rarr; upper</li>
+<li>7231, 7236
+<ul class="org-ul">
+<li>3p .<sup>2</sup>P<sup>o</sup> &rarr; 3d .<sup>2</sup>D</li>
+</ul></li>
+<li>6578, 6583
+<ul class="org-ul">
+<li>3s .<sup>2</sup>S &rarr; 3p .<sup>2</sup>P<sup>o</sup></li>
+</ul></li>
+<li>6257, 6260
+<ul class="org-ul">
+<li>4p .<sup>2</sup>P<sup>o</sup> &rarr; 5d .<sup>2</sup>D</li>
+</ul></li>
+<li>6460 (recomb)
+<ul class="org-ul">
+<li>4f .<sup>2</sup>F<sup>o</sup> &rarr; 6g .<sup>2</sup>G (L = 4)</li>
+</ul></li>
+<li>4267 (recomb, mainly)
+<ul class="org-ul">
+<li>3d .<sup>2</sup>D &rarr; 4f .<sup>2</sup>F<sup>o</sup> (L = 3)</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org59a6649" class="outline-4">
+<h4 id="org59a6649"><span class="section-number-4">1.2.4</span> What are the relevant pumping lines?</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<ul class="org-ul">
+<li>7231, 7236 can have their upper level directly pumped from the ground
+<ul class="org-ul">
+<li><p>
+2p .<sup>2</sup>P<sup>o</sup> &rarr; 3d .<sup>2</sup>D : 687 &Aring;
+</p>
+<pre class="example" id="orgc329053">
+: -LAB-WAVL-ANG-VAC-|-SPC--|TT|--------CONFIGURATION--------|-TERM--|-J_i-J_k-|--A_ki---|-TPF-|--LVL-EN--CM-1---|-REF---|
+:     687.0526        C II  E1         2s2.2p-2s2.3d         2Po-2D  1/2 - 3/2 2.400e+09    24  0.00 - 145549.27 ASD	  
+:     687.3453        C II  E1         2s2.2p-2s2.3d         2Po-2D  3/2 - 5/2 2.880e+09    24 63.42 - 145550.70 ASD
+:     687.3521        C II  E1         2s2.2p-2s2.3d         2Po-2D  3/2 - 3/2 4.810e+08    24 63.42 - 145549.27 ASD
+</pre></li>
+</ul></li>
+<li>6578 should mainly be populated by the same route
+<ul class="org-ul">
+<li>But also via 4s</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7f581f6" class="outline-4">
+<h4 id="org7f581f6"><span class="section-number-4">1.2.5</span> Recombination contribution to spectrum</h4>
+<div class="outline-text-4" id="text-1-2-5">
+</div>
+<ol class="org-ol">
+<li><a id="org20feab1"></a>Estimate of 4267+ / 6578+ from recombination<br />
+<ol class="org-ol">
+<li><a id="org232ce1e"></a>Estimate based on Escalante:2012a<br />
+<div class="outline-text-6" id="text-1-2-5-1-1">
+<p>
+This is the table of their calculations for IC 418, which should be typical conditions for PNe and H II regions
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Lower-Upper</th>
+<th scope="col" class="org-right">&lambda;(À)</th>
+<th scope="col" class="org-right">I<sub>rec</sub>/I<sub>calc</sub></th>
+<th scope="col" class="org-right">I<sub>calc</sub></th>
+<th scope="col" class="org-right">I<sub>obs</sub></th>
+<th scope="col" class="org-right">I<sub>rec</sub></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">3d2D5/2-4f2F9,</td>
+<td class="org-right">4267.3</td>
+<td class="org-right">0.989</td>
+<td class="org-right">59.20</td>
+<td class="org-right">57.12</td>
+<td class="org-right">58.55</td>
+</tr>
+
+<tr>
+<td class="org-left">3s251/2-3p2Pg3/2</td>
+<td class="org-right">6578.1</td>
+<td class="org-right">0.654</td>
+<td class="org-right">42.90</td>
+<td class="org-right">53.74</td>
+<td class="org-right">28.06</td>
+</tr>
+
+<tr>
+<td class="org-left">3s2S1/2-3p 2P°n</td>
+<td class="org-right">6582.9</td>
+<td class="org-right">0.527</td>
+<td class="org-right">26.60</td>
+<td class="org-right">&#xa0;</td>
+<td class="org-right">14.02</td>
+</tr>
+
+<tr>
+<td class="org-left">3p-P9/2-3d-D3/2</td>
+<td class="org-right">7231.3</td>
+<td class="org-right">0.632</td>
+<td class="org-right">26.60</td>
+<td class="org-right">16.92</td>
+<td class="org-right">16.81</td>
+</tr>
+
+<tr>
+<td class="org-left">3p2P92-3d2D5/2</td>
+<td class="org-right">7236.4</td>
+<td class="org-right">0.836</td>
+<td class="org-right">43.30</td>
+<td class="org-right">46.73</td>
+<td class="org-right">36.20</td>
+</tr>
+
+<tr>
+<td class="org-left">3p2P%2-3dD3/2</td>
+<td class="org-right">7237.2</td>
+<td class="org-right">0.632</td>
+<td class="org-right">5.30</td>
+<td class="org-right">4.89</td>
+<td class="org-right">3.35</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>The last column is the predicted intensity from recombination alone</li>
+<li>Unfortunately, I don't know if their value for 4267.3 includes the 4267.0 component or not</li>
+<li>Anyway, they get 4267.3/6578.1 = 58.55/28.06 = 2.1
+<ul class="org-ul">
+<li>If they included 4267.0 as well, it would be slightly higher</li>
+<li>But including 6582.9 (unobservable!) would make it lower again</li>
+</ul></li>
+</ul>
+</div>
+</li>
+<li><a id="org9deec11"></a>Estimate based on Davey:2000a<br />
+<div class="outline-text-6" id="text-1-2-5-1-2">
+<p>
+Effective recombination coefficients (units 1e-14 cm<sup>3</sup>/s) for different T (units of 1000 K)
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Transition</th>
+<th scope="col" class="org-left">A[nm]</th>
+<th scope="col" class="org-left">Case</th>
+<th scope="col" class="org-right">3.5</th>
+<th scope="col" class="org-right">5.0</th>
+<th scope="col" class="org-right">7.5</th>
+<th scope="col" class="org-right">10.0</th>
+<th scope="col" class="org-right">12.5</th>
+<th scope="col" class="org-right">15.0</th>
+<th scope="col" class="org-right">20.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">4f(2F°)-3d(?De)</td>
+<td class="org-left">426.7</td>
+<td class="org-left">A</td>
+<td class="org-right">8.06e+1</td>
+<td class="org-right">5.65e+1</td>
+<td class="org-right">3.72e+1</td>
+<td class="org-right">2.73e+1</td>
+<td class="org-right">2.14e+1</td>
+<td class="org-right">1.79e+1</td>
+<td class="org-right">1.51e+1</td>
+</tr>
+
+<tr>
+<td class="org-left">-</td>
+<td class="org-left">-</td>
+<td class="org-left">B</td>
+<td class="org-right">8.12e+1</td>
+<td class="org-right">5.70e+1</td>
+<td class="org-right">3.75e+1</td>
+<td class="org-right">2.76e+1</td>
+<td class="org-right">2.17e+1</td>
+<td class="org-right">1.81e+1</td>
+<td class="org-right">1.53e+1</td>
+</tr>
+
+<tr>
+<td class="org-left">3p(2Po)-3s(?Se)</td>
+<td class="org-left">658.0</td>
+<td class="org-left">A</td>
+<td class="org-right">9.39e+0</td>
+<td class="org-right">7.82e+0</td>
+<td class="org-right">6.57e+0</td>
+<td class="org-right">6.20e+0</td>
+<td class="org-right">6.28e+0</td>
+<td class="org-right">6.56e+0</td>
+<td class="org-right">7.21e+0</td>
+</tr>
+
+<tr>
+<td class="org-left">-</td>
+<td class="org-left">-</td>
+<td class="org-left">B</td>
+<td class="org-right">7.19e+1</td>
+<td class="org-right">5.50e+1</td>
+<td class="org-right">4.04e+1</td>
+<td class="org-right">3.29e+1</td>
+<td class="org-right">2.88e+1</td>
+<td class="org-right">2.67e+1</td>
+<td class="org-right">2.67e+1</td>
+</tr>
+
+<tr>
+<td class="org-left">3d(2De)-3p(2po)</td>
+<td class="org-left">723.5</td>
+<td class="org-left">A</td>
+<td class="org-right">2.02e+0</td>
+<td class="org-right">1.48e+0</td>
+<td class="org-right">1.03e+0</td>
+<td class="org-right">7.91e-1</td>
+<td class="org-right">6.57e-1</td>
+<td class="org-right">5.86e-1</td>
+<td class="org-right">5.66e-1</td>
+</tr>
+
+<tr>
+<td class="org-left">-</td>
+<td class="org-left">-</td>
+<td class="org-left">B</td>
+<td class="org-right">1.42e+2</td>
+<td class="org-right">1.04e+2</td>
+<td class="org-right">7.25e+1</td>
+<td class="org-right">5.59e+1</td>
+<td class="org-right">4.65e+1</td>
+<td class="org-right">4.15e+1</td>
+<td class="org-right">4.00e+1</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>Case A and Case B - which should we use?</li>
+<li>Intensity ratio is ratio of &alpha; / &lambda;
+<ul class="org-ul">
+<li>Calculation for Case B at 1e4 K
+<ul class="org-ul">
+<li>I(426.7) / I(658.0) = (2.76e+1 / 426.7) / (3.29e+1 / 658.0) = 1.2936</li>
+</ul></li>
+<li>Calculation for Case A at 1e4 K
+<ul class="org-ul">
+<li>I(426.7) / I(658.0) = (2.73e+1 / 426.7) / (6.20e+0 / 658.0) = 6.79</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org00afede" class="outline-2">
+<h2 id="org00afede"><span class="section-number-2">2</span> Previous notes from other projects</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+These are just copied verbatim here.
+</p>
+
+<p>
+Also, general notes on permitted lines can be found in:
+</p>
+<ul class="org-ul">
+<li><a href="../../Orion-HH/muse-oii-permitted.html">../../Orion-HH/muse-oii-permitted.html</a></li>
+<li><a href="../../Metal-Permitted/metal-permitted.html">../../Metal-Permitted/metal-permitted.html</a></li>
+</ul>
+</div>
+
+
+
+<div id="outline-container-orgae363bb" class="outline-3">
+<h3 id="orgae363bb"><span class="section-number-3">2.1</span> orion-muse.org</h3>
+<div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-orga3cf30d" class="outline-4">
+<h4 id="orga3cf30d"><span class="section-number-4">2.1.1</span> Random thoughts on permitted lines</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<ul class="org-ul">
+<li>Good discussion in Sharpee et al 2004
+<ul class="org-ul">
+<li>Turns out that the C II 7231, 7236 lines are already expected to be 50% fluorescence
+<ul class="org-ul">
+<li>At least according to Grandi (1976)</li>
+<li>This is multiplet V3</li>
+</ul></li>
+<li>Description of morphology of the fluorescent contribution is hidden away in <a href="#orgeb079ac">{10/10} Perform line extraction, fuzzing, binning, multimapping all on linux server</a></li>
+<li>The best C II line is V6 4267, which we don't have</li>
+<li>The pure recomb lines that we <i>do</i> have are
+<ul class="org-ul">
+<li>4620.11 V17.08 - clean bit of spectrum but very weak</li>
+<li>4802.740 - messy blend with N II and possibly [Co II]</li>
+<li>5342.40 V17.06 - clean but weak</li>
+<li>6151.43 V16.04 - stronger than the others, more or less clean, except for O I 6156 on the red side</li>
+<li>6461.95 V17.04 - strongest so far and clean</li>
+<li>7519.49 - not in Sharpee, sky contam but subtractable</li>
+</ul></li>
+<li>So best bet seems to be 6461.95</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgeb079ac" class="outline-4">
+<h4 id="orgeb079ac"><span class="section-number-4">2.1.2</span> <span class="done DONE">DONE</span> <code>[10/10]</code> Perform line extraction, fuzzing, binning, multimapping all on linux server</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+&#x2026;
+<b>Lots of steps</b>
+&#x2026;
+</p>
+<ol class="org-ol">
+<li>Do multibin combination for the ratios at constant s/n
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Pilot study for selected ratios.  Highlights are:
+<ul class="org-ul">
+<li>C II 7236 / H&alpha; 6563 - shows wonderful swirls, presumably where thet fluorescent excitation of the C II line is highest, which should trace the inner edge of dense ionized gas in the nebula.  This has peaks (from inside to outside) at the LV bowshocks; at the <b>Ney-Allen Nebula</b>; at the filament behind LV6; <i>possibly</i> the 177-341 bowshock; in a <b>270 degree shell</b> that starts in front of 177-341 and curves round to W past 159-350 shocks, then runs NW parallel to the SW lane (and yes, that is an extinction feature, the superposition may be conicidental), then bends to the E to run along just inside the high-ionization inner arm of the E-W bar (of course the appearance of a 270 deg shell may be illusory); then the E side of the <b>Big Arc</b>, which is the largest scale feature (to the W it becoes less prominent, which coincides in PA with where the inner 270 deg shell gets brighter - maybe it is blocking it); then finally, around &theta;2A.  There is also a dip at the Bright Bar i-front, which must be due the C++/C+ transition</li>
+</ul></li>
+</ul></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org51b2884" class="outline-4">
+<h4 id="org51b2884"><span class="section-number-4">2.1.3</span> Extract from basic-line-list.tab</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<ul class="org-ul">
+<li><i>Note added <span class="timestamp-wrapper"><span class="timestamp">[2021-11-24 Wed]</span></span></i>
+<ul class="org-ul">
+<li>I have included other lines that are within 1 or 2 Angstrom of the C II lines</li>
+</ul></li>
+</ul>
+<table id="orgc27e69d" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Ion</th>
+<th scope="col" class="org-left">Class</th>
+<th scope="col" class="org-right">wav0</th>
+<th scope="col" class="org-right">strength</th>
+<th scope="col" class="org-right">blue cont</th>
+<th scope="col" class="org-right">red cont</th>
+<th scope="col" class="org-left">comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">4620.11</td>
+<td class="org-right">6</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-left"><b>*</b> also 4620.26, pure recom</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">4802.740</td>
+<td class="org-right">5</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-left"><b>*</b> blend but pure recom</td>
+</tr>
+
+<tr>
+<td class="org-left">N II</td>
+<td class="org-left">P</td>
+<td class="org-right">4803.287</td>
+<td class="org-right">4</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-left">blend [Co II] 4802.36</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">5121.82</td>
+<td class="org-right">7</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-left"><b>*</b></td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">5342.40</td>
+<td class="org-right">6</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+<td class="org-left"><b>*</b> V17.06 pure recom</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">5889.78</td>
+<td class="org-right">4</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-left">Na I sky blend, V5</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">6151.43</td>
+<td class="org-right">5</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-left">V16.04, pure recomb</td>
+</tr>
+
+<tr>
+<td class="org-left">O I</td>
+<td class="org-left">L</td>
+<td class="org-right">6155.98</td>
+<td class="org-right">6</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+<td class="org-left">* blend with Ni II 6157.42</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">6257.18</td>
+<td class="org-right">7</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-left"><b>*</b> V10.03 + O I ?</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">6259.56</td>
+<td class="org-right">7</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+<td class="org-left"><b>*</b> V10.03, pure recomb</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">6461.95</td>
+<td class="org-right">6</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-left">V17.04 Pure recomb</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">6578.05</td>
+<td class="org-right">5</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-left">Blue 6583.45 dominates</td>
+</tr>
+
+<tr>
+<td class="org-left">[N II]</td>
+<td class="org-left">L</td>
+<td class="org-right">6583.45</td>
+<td class="org-right">2</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">D</td>
+<td class="org-right">6779.94</td>
+<td class="org-right">7</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-left"><b>*</b> +6780.60 DIELEC</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">D</td>
+<td class="org-right">6787.22</td>
+<td class="org-right">7</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-left"><b>*</b></td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">6812.28</td>
+<td class="org-right">7</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+<td class="org-left"><b>*</b> or [Ni II] 6813.57 ?</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">7231.34</td>
+<td class="org-right">3</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-left">V3 - 50% fluorescence</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">7236.42</td>
+<td class="org-right">3</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+<td class="org-left">7236.42 + 7237.17</td>
+</tr>
+
+<tr>
+<td class="org-left">O II</td>
+<td class="org-left">P</td>
+<td class="org-right">7369.029</td>
+<td class="org-right">6</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-left">blend C II 7370.0</td>
+</tr>
+
+<tr>
+<td class="org-left">C II</td>
+<td class="org-left">P</td>
+<td class="org-right">7519.49</td>
+<td class="org-right">6</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-left">Plus Sky at 7524</td>
+</tr>
+
+<tr>
+<td class="org-left">[Cl IV]</td>
+<td class="org-left">U</td>
+<td class="org-right">7530.80</td>
+<td class="org-right">5</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+<td class="org-left">blend C II 7530.57</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+<div id="outline-container-orgf9f0632" class="outline-3">
+<h3 id="orgf9f0632"><span class="section-number-3">2.2</span> muse-oii-permitted.org</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+<div id="outline-container-org1070ea2" class="outline-4">
+<h4 id="org1070ea2"><span class="section-number-4">2.2.1</span> <span class="todo TODO">TODO</span> Permitted lines</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<ul class="org-ul">
+<li>Extract O II and C II lines from MUSE</li>
+<li>For the O II lines, we need to isolate the 4649 blend</li>
+<li>For C II pure recomb lines 
+<ul class="org-ul">
+<li>We have 4620 supposedly ?!
+<ul class="org-ul">
+<li>Very weak and there may be another line at 4621</li>
+</ul></li>
+<li>Also 4803 but blended with N II and [Co II]</li>
+<li>5342.40 - very weak</li>
+<li>6151.43 - might be good</li>
+<li>6461.96 - weak but should be clear
+<ul class="org-ul">
+<li>This is definitely the best bet for C II lines</li>
+<li>Escalante:2012a have it being all recombination</li>
+<li>Whereas 7231 and 7236 are 20 to 40% fluorescent in IC 418</li>
+</ul></li>
+</ul></li>
+<li>N II lines
+<ul class="org-ul">
+<li>These are generally weak and must be a mixture of recombination and fluorescence</li>
+</ul></li>
+<li>Si II lines
+<ul class="org-ul">
+<li>These are much stronger, also mixture</li>
+</ul></li>
+<li>More O II lines from Manu/Adal
+<ul class="org-ul">
+<li>4609, 4610 - Escalante:2012a says is 100% recombination
+<ul class="org-ul">
+<li>Terms are in LK coupling scheme
+<ul class="org-ul">
+<li>3d 2D5/2–4f F[4]o7/2</li>
+<li>3d 2D3/2–4f F[2]o5/2</li>
+</ul></li>
+<li>Unfortunately, there is an [Fe III] line at 4607</li>
+<li>Also N II 4607 but that is weaker</li>
+<li>4607 to 4610 are blended in Manu and MUSE</li>
+<li>The O II lines are well separated from [Fe III] in Adal</li>
+<li>Discussed further below</li>
+</ul></li>
+<li>4596</li>
+</ul></li>
+<li class="off"><code>[&#xa0;]</code> Excitation of O II V1
+<ul class="org-ul">
+<li>Multiplet (quartet) is 3s ^4P &rarr; 3p ^4D
+<ul class="org-ul">
+<li>Storey:2017a has more rigorous terminology</li>
+<li>But backwards: UPPER &rarr; LOWER</li>
+<li>2s<sup>2</sup> 2p<sup>2</sup>(.<sup>3</sup>P) 3p .<sup>4</sup>D<sub>o</sub> &rarr;  2s<sup>2</sup> 2p<sup>2</sup>(.<sup>3</sup>P) 3s .<sup>4</sup>P<sub>e</sub></li>
+<li><code>2s22p2(3P)3p 4Do    -   2s22p2(3P)3s 4Pe</code></li>
+<li>E.g., 4649.13 is index 8790</li>
+</ul></li>
+<li>Ground state is 2p3 ^4S
+<ul class="org-ul">
+<li>Resonant absorption 2p3 ^4S &rarr; 3d ^4P (429.650 &rarr; 429.716 &Aring;)
+<ul class="org-ul">
+<li>so that is 2.12 Rydbergs</li>
+</ul></li>
+<li>Followed by decay to 3p terms</li>
+<li>Need to make a diagram and work out if it is feasible</li>
+</ul></li>
+<li>Velocity gradients in Big Arc will tend to make fluorescence more efficient</li>
+<li>Interestingly, the analogous N I multiplet is at 8680-8719
+<ul class="org-ul">
+<li>N I and O II are identical in electron configuration</li>
+<li>We see all these lines nicely in the MUSE data</li>
+<li>They are all at least 95% fluoresced</li>
+<li class="off"><code>[&#xa0;]</code> We could look at the equivalent of the 3d-4f lines in N I</li>
+</ul></li>
+</ul></li>
+<li>Case of the 3d-4f lines
+<ul class="org-ul">
+<li>These should not have a fluorescent component
+<ul class="org-ul">
+<li><i>except that maybe they might if intercombination lines are important</i></li>
+</ul></li>
+<li>But they give the same abundances as the other lines (in Eduardo HH 529 data)</li>
+<li>Strongest lines:
+<ul class="org-ul">
+<li>4303.8: I &asymp; 0.63e-4 Hb  (Escalante:2013a)
+<ul class="org-ul">
+<li>Compare with 4649 &asymp; 6.7e-4 Hb
+<ul class="org-ul">
+<li>ODell:2010a have 4959/Hb = 0.7 to 1.0 in slits 10 and 11, which cover area of Adal's slit 6</li>
+<li>Adal has 4649/4959 = 10 &rarr; 12 times 1e-4</li>
+<li>Eduardo (cut 2) has I(4649.13) = 11.4 in nebula and 24 in shock !!</li>
+</ul></li>
+<li>Eduardo 4959/Hb in cut 2
+<ul class="org-ul">
+<li>1.15 in nebula</li>
+<li>1.67 in shock</li>
+</ul></li>
+<li>Seen in Manu data - about 5 times weaker than 4317 and 4320 (3s ^4P - 3p ^4P)
+<ul class="org-ul">
+<li>Which are themselves about 4 times weaker than V1</li>
+<li>E.g., Manu has 4649 = 1.13 x cont</li>
+<li>I(4304) = 0.01 x cont, so 13 x weaker than 4649 =&gt; I(4304) = 0.77 1e-4 I(Hb)</li>
+<li>Within the errors, this is consistent with Escalante predicted, especially if we add in the 4303.5 contribution: 0.09 + 0.63 = 0.72</li>
+</ul></li>
+<li>Observed in Eduardo: I = 2.0 (cut 3) and 2.1 (cut 2 neb), and 4.6 (cut 2 shock) !!!</li>
+</ul></li>
+<li>4277 complex
+<ul class="org-ul">
+<li>Strongest component: 4275.5 with predicted I = 0.84
+<ul class="org-ul">
+<li>Blended with [Fe II] 4276.84 in Manu</li>
+<li>Observed in Eduardo with observed I = 1.6</li>
+</ul></li>
+</ul></li>
+<li>4609.3: predicted I &asymp; 0.66e-4 Hb  (Escalante:2013a)
+<ul class="org-ul">
+<li>Also, weaker component at 4610.2</li>
+<li>Seen in Manu, but blend with [Fe III] 4607</li>
+<li>Very well isolated in Adal: I(4609) = 1e-4 I(4959)</li>
+<li>So this has observed intensity that maybe is slightly higher than predicted (by about 30%)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>What states can we have
+<ul class="org-ul">
+<li>3 outer electrons</li>
+<li>Ground state is 2p<sup>3</sup> ^4S
+<ul class="org-ul">
+<li>2S+1 = 4 =&gt; S = 3/2 so all 3 spins are aligned</li>
+<li>L=0 so J = 3/2</li>
+</ul></li>
+<li>Pumped state: one electron goes from 2p &rarr; 3d
+<ul class="org-ul">
+<li>L = 0 &rarr; 1 for E1 transition so must be a ^4P state</li>
+<li>In fact <b>only</b> ^4P levels can be directly pumped from ground
+<ul class="org-ul">
+<li>At least I would have thought, although Escalante also mention ^4S &rarr; ^4D transition, which has &Delta; L = 2, so must be quadrupole</li>
+</ul></li>
+<li>So 2p<sup>2</sup> 3d ^4P has L=1, S=3/2, J= 5/2, 3/2, 1/2</li>
+</ul></li>
+<li>If we pump the 3d .<sup>4</sup>P level then we need the transition
+<ul class="org-ul">
+<li>3d .<sup>4</sup>P<sub>e</sub> &rarr; 3p .<sup>4</sup>D<sub>o</sub> in order to populate the upper level of V1</li>
+<li><p>
+Storey has the following components:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">IND</th>
+<th scope="col" class="org-right">wav</th>
+<th scope="col" class="org-right">2JI</th>
+<th scope="col" class="org-right">2JF</th>
+<th scope="col" class="org-left">Other</th>
+<th scope="col" class="org-left">Manu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">8494</td>
+<td class="org-right">3864.13</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-left">Si II 3863</td>
+<td class="org-left">Blend</td>
+</tr>
+
+<tr>
+<td class="org-right">8493</td>
+<td class="org-right">3872.44</td>
+<td class="org-right">1</td>
+<td class="org-right">3</td>
+<td class="org-left">[Ne III] 3869</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">8515</td>
+<td class="org-right">3874.09</td>
+<td class="org-right">3</td>
+<td class="org-right">1</td>
+<td class="org-left">He I 3878</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">8514</td>
+<td class="org-right">3882.45</td>
+<td class="org-right">3</td>
+<td class="org-right">3</td>
+<td class="org-left">H I 3889</td>
+<td class="org-left">?</td>
+</tr>
+
+<tr>
+<td class="org-right">8566</td>
+<td class="org-right">3893.52</td>
+<td class="org-right">5</td>
+<td class="org-right">3</td>
+<td class="org-left">H I 3889</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">8513</td>
+<td class="org-right">3896.30</td>
+<td class="org-right">3</td>
+<td class="org-right">5</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">faint</td>
+</tr>
+
+<tr>
+<td class="org-right">8565</td>
+<td class="org-right">3907.45</td>
+<td class="org-right">5</td>
+<td class="org-right">5</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">yes</td>
+</tr>
+
+<tr>
+<td class="org-right">8564</td>
+<td class="org-right">3926.58</td>
+<td class="org-right">5</td>
+<td class="org-right">7</td>
+<td class="org-left">He I 3927</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table></li>
+<li>Unfortunately, most will be blended with other lines</li>
+</ul></li>
+<li>We should also get another route down via 3p .<sup>4</sup>S:
+<ul class="org-ul">
+<li>3d .<sup>4</sup>P<sub>e</sub> &rarr; 3p .<sup>4</sup>S<sub>o</sub> followed by 3p .<sup>4</sup>S<sub>o</sub> &rarr; 3s .<sup>4</sup>P<sub>e</sub>
+<ul class="org-ul">
+<li>which ends at same lower level as V1</li>
+</ul></li>
+<li><p>
+3d .<sup>4</sup>P<sub>e</sub> &rarr; 3p .<sup>4</sup>S<sub>o</sub> or <code>2s22p2(3P)3d 4Pe    -   2s22p2(3P)3p 4So</code>
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">IND</th>
+<th scope="col" class="org-right">wav</th>
+<th scope="col" class="org-right">2JI</th>
+<th scope="col" class="org-right">2JF</th>
+<th scope="col" class="org-left">Other</th>
+<th scope="col" class="org-left">Manu</th>
+<th scope="col" class="org-left">MUSE</th>
+<th scope="col" class="org-left">Adal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">8489</td>
+<td class="org-right">4890.86</td>
+<td class="org-right">1</td>
+<td class="org-right">3</td>
+<td class="org-left">[Fe II] 4890</td>
+<td class="org-left">Blend?</td>
+<td class="org-left">Blend?</td>
+<td class="org-left">weak but resolved</td>
+</tr>
+
+<tr>
+<td class="org-right">8507</td>
+<td class="org-right">4906.83</td>
+<td class="org-right">3</td>
+<td class="org-right">3</td>
+<td class="org-left">[Fe II] 4905</td>
+<td class="org-left">Blend?</td>
+<td class="org-left">Blend</td>
+<td class="org-left">Weak</td>
+</tr>
+
+<tr>
+<td class="org-right">8559</td>
+<td class="org-right">4924.53</td>
+<td class="org-right">5</td>
+<td class="org-right">3</td>
+<td class="org-left">He I 4922, [Fe III] 4925</td>
+<td class="org-left">Blend?</td>
+<td class="org-left">No</td>
+<td class="org-left">Possibly</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>
+3p .<sup>4</sup>S<sub>o</sub> &rarr; 3s .<sup>4</sup>P<sub>e</sub> or <code>2s22p2(3P)3p 4So    -   2s22p2(3P)3s 4Pe</code>
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">IND</th>
+<th scope="col" class="org-right">wav</th>
+<th scope="col" class="org-right">2JI</th>
+<th scope="col" class="org-right">2JF</th>
+<th scope="col" class="org-left">Other</th>
+<th scope="col" class="org-left">Manu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">8730</td>
+<td class="org-right">3712.74</td>
+<td class="org-right">3</td>
+<td class="org-right">1</td>
+<td class="org-left">H I 3712</td>
+<td class="org-left">No</td>
+</tr>
+
+<tr>
+<td class="org-right">8729</td>
+<td class="org-right">3727.32</td>
+<td class="org-right">3</td>
+<td class="org-right">3</td>
+<td class="org-left">[O II] 3726</td>
+<td class="org-left">No</td>
+</tr>
+
+<tr>
+<td class="org-right">8728</td>
+<td class="org-right">3749.48</td>
+<td class="org-right">3</td>
+<td class="org-right">5</td>
+<td class="org-left">H I 3750</td>
+<td class="org-left">No</td>
+</tr>
+</tbody>
+</table></li>
+<li>So this is the <b>cursed multiplet</b> - no chance of ever seeing it</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: William Henney</p>
+<p class="date">Created: 2021-11-26 Fri 10:00</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
