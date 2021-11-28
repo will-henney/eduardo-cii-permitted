@@ -114,6 +114,25 @@ Effective recombination coefficients (units 1e-14 cm^3/s) for different T (units
     + I(426.7) / I(658.0) = (2.76e+1 / 426.7) / (3.29e+1 / 658.0) = 1.2936
   + Calculation for Case A at 1e4 K
     + I(426.7) / I(658.0) = (2.73e+1 / 426.7) / (6.20e+0 / 658.0) = 6.79
+** Datasets to use
+*** TODO KPNO Orion
++ This has C II 6578
++ [[file:../../../Work/BobKPNO/2004/README]]
+ 
+*** MUSE Orion
++ Pure recomb
+  + 6462
++ Added fluorescence
+  + 7231 should be uncontaminated
+  + 7236 may be contaminated by [Ar IV] 7237.4, but that should be only 2 to 3% of 4740
+  + 6578 needs to have the [N II] subtracted
+*** PPAK Orion
++ Has very good map of 4267
++ Also 5342 and 6462
+*** SPM MES Orion
++ Also has C II 6578 over a wider field than KPNO
+  + And possibly deeper
+  + But less systematic coverage
 
 * Previous notes from other projects
 These are just copied verbatim here.
@@ -163,29 +182,29 @@ CLOSED: [2015-11-09 Mon 19:46]
 + /Note added [2021-11-24 Wed]/
   + I have included other lines that are within 1 or 2 Angstrom of the C II lines
 #+name: cii-line-list
-| Ion      | Class |     wav0 | strength | blue cont | red cont | comment                      |
-|----------+-------+----------+----------+-----------+----------+------------------------------|
-| C II     | P     |  4620.11 |        6 |         1 |        1 | *** also 4620.26, pure recom |
-| C II     | P     | 4802.740 |        5 |         1 |        0 | *** blend but pure recom     |
-| N II     | P     | 4803.287 |        4 |         1 |        1 | blend [Co II] 4802.36        |
-| C II     | P     |  5121.82 |        7 |         1 |        1 | ***                          |
-| C II     | P     |  5342.40 |        6 |         0 |        1 | *** V17.06 pure recom        |
-| C II     | P     |  5889.78 |        4 |         1 |        0 | Na I sky blend, V5           |
-| C II     | P     |  6151.43 |        5 |         1 |        0 | V16.04, pure recomb          |
-| O I      | L     |  6155.98 |        6 |         0 |        1 | * blend with Ni II 6157.42   |
-| C II     | P     |  6257.18 |        7 |         1 |        0 | *** V10.03 + O I ?           |
-| C II     | P     |  6259.56 |        7 |         0 |        1 | *** V10.03, pure recomb      |
-| C II     | P     |  6461.95 |        6 |         1 |        1 | V17.04 Pure recomb           |
-| C II     | P     |  6578.05 |        5 |         1 |        0 | Blue 6583.45 dominates       |
-| [N II]   | L     |  6583.45 |        2 |         1 |        1 |                              |
-| C II     | D     |  6779.94 |        7 |         1 |        0 | *** +6780.60 DIELEC          |
-| C II     | D     |  6787.22 |        7 |         1 |        1 | ***                          |
-| C II     | P     |  6812.28 |        7 |         0 |        1 | *** or [Ni II] 6813.57 ?     |
-| C II     | P     |  7231.34 |        3 |         1 |        0 | V3 - 50% fluorescence        |
-| C II     | P     |  7236.42 |        3 |         0 |        1 | 7236.42 + 7237.17            |
-| O II     | P     | 7369.029 |        6 |         1 |        0 | blend C II 7370.0            |
-| C II     | P     |  7519.49 |        6 |         1 |        0 | Plus Sky at 7524             |
-| [Cl IV]  | U     |  7530.80 |        5 |         0 |        1 | blend C II 7530.57           |
+| Ion     | Class |     wav0 | strength | blue cont | red cont | comment                      |
+|---------+-------+----------+----------+-----------+----------+------------------------------|
+| C II    | P     |  4620.11 |        6 |         1 |        1 | *** also 4620.26, pure recom |
+| C II    | P     | 4802.740 |        5 |         1 |        0 | *** blend but pure recom     |
+| N II    | P     | 4803.287 |        4 |         1 |        1 | blend [Co II] 4802.36        |
+| C II    | P     |  5121.82 |        7 |         1 |        1 | ***                          |
+| C II    | P     |  5342.40 |        6 |         0 |        1 | *** V17.06 pure recom        |
+| C II    | P     |  5889.78 |        4 |         1 |        0 | Na I sky blend, V5           |
+| C II    | P     |  6151.43 |        5 |         1 |        0 | V16.04, pure recomb          |
+| O I     | L     |  6155.98 |        6 |         0 |        1 | * blend with Ni II 6157.42   |
+| C II    | P     |  6257.18 |        7 |         1 |        0 | *** V10.03 + O I ?           |
+| C II    | P     |  6259.56 |        7 |         0 |        1 | *** V10.03, pure recomb      |
+| C II    | P     |  6461.95 |        6 |         1 |        1 | V17.04 Pure recomb           |
+| C II    | P     |  6578.05 |        5 |         1 |        0 | Blue 6583.45 dominates       |
+| [N II]  | L     |  6583.45 |        2 |         1 |        1 |                              |
+| C II    | D     |  6779.94 |        7 |         1 |        0 | *** +6780.60 DIELEC          |
+| C II    | D     |  6787.22 |        7 |         1 |        1 | ***                          |
+| C II    | P     |  6812.28 |        7 |         0 |        1 | *** or [Ni II] 6813.57 ?     |
+| C II    | P     |  7231.34 |        3 |         1 |        0 | V3 - 50% fluorescence        |
+| C II    | P     |  7236.42 |        3 |         0 |        1 | 7236.42 + 7237.17            |
+| O II    | P     | 7369.029 |        6 |         1 |        0 | blend C II 7370.0            |
+| C II    | P     |  7519.49 |        6 |         1 |        0 | Plus Sky at 7524             |
+| [Cl IV] | U     |  7530.80 |        5 |         0 |        1 | blend C II 7530.57           |
 
 
 
