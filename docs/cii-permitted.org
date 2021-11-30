@@ -32,6 +32,10 @@
     + 4f \to 6g at 6240 is same levels as C I 6460 (but not really equivalent, since we should use 1 higher n for Si II), but we do not detect it (presumably because of the low Si abundance)
     + 4d \to 5f at 7849, 7850 is equivalent of C II 4267, but we do not detect it
 + O II might have a fluorescent contribution, which could be relevant to ADF
+  + This is treated in detail in
+    + [[file:../../Orion-HH/muse-oii-permitted.org][file:~/Dropbox/Orion-HH/muse-oii-permitted.org]] has general description of the project
+    + [[file:../../Orion-HH/oii-fluorescence.org][file:~/Dropbox/Orion-HH/oii-fluorescence.org]] has detailed calculation of routes for the fluorescent excitation of the O II V1 lines
+    + 
 
 ** Atomic structure of C II (and Si II) 
 

@@ -1,5 +1,5 @@
 /notebooks/.ipynb_checkpoints/*.ipynb
-/auto/
+/paper/auto/
 *.aux
 *.blg
 *.fdb_latexmk
@@ -8,3 +8,4 @@
 *.out
 /paper/cii-orion.pdf
 *.synctex.gz
+data/orig-muse
