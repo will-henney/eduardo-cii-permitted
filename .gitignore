@@ -1,1 +1,10 @@
 /notebooks/.ipynb_checkpoints/*.ipynb
+/auto/
+*.aux
+*.blg
+*.fdb_latexmk
+*.fls
+/paper/cii-orion.log
+*.out
+/paper/cii-orion.pdf
+*.synctex.gz

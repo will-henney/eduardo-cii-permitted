@@ -1,0 +1,41 @@
+\begin{thebibliography}{}
+\makeatletter
+\relax
+\def\mn@urlcharsother{\let\do\@makeother \do\$\do\&\do\#\do\^\do\_\do\%\do\~}
+\def\mn@doi{\begingroup\mn@urlcharsother \@ifnextchar [ {\mn@doi@}
+  {\mn@doi@[]}}
+\def\mn@doi@[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty \href
+  {http://dx.doi.org/#2} {doi:#2}\else \href {http://dx.doi.org/#2} {#1}\fi
+  \endgroup}
+\def\mn@eprint#1#2{\mn@eprint@#1:#2::\@nil}
+\def\mn@eprint@arXiv#1{\href {http://arxiv.org/abs/#1} {{\tt arXiv:#1}}}
+\def\mn@eprint@dblp#1{\href {http://dblp.uni-trier.de/rec/bibtex/#1.xml}
+  {dblp:#1}}
+\def\mn@eprint@#1:#2:#3:#4\@nil{\def\@tempa {#1}\def\@tempb {#2}\def\@tempc
+  {#3}\ifx \@tempc \@empty \let \@tempc \@tempb \let \@tempb \@tempa \fi \ifx
+  \@tempb \@empty \def\@tempb {arXiv}\fi \@ifundefined
+  {mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter \expandafter \csname
+  mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}
+
+\bibitem[\protect\citeauthoryear{{Davey}, {Storey}  \& {Kisielius}}{{Davey}
+  et~al.}{2000}]{Davey:2000a}
+{Davey} A.~R.,  {Storey} P.~J.,   {Kisielius} R.,  2000, \aaps, 142, 85
+
+\bibitem[\protect\citeauthoryear{{Escalante} \& {Morisset}}{{Escalante} \&
+  {Morisset}}{2005}]{Escalante:2005a}
+{Escalante} V.,  {Morisset} C.,  2005, \mnras, 361, 813
+
+\bibitem[\protect\citeauthoryear{{Escalante}, {Morisset}  \&
+  {Georgiev}}{{Escalante} et~al.}{2012}]{Escalante:2012a}
+{Escalante} V.,  {Morisset} C.,   {Georgiev} L.,  2012, \mnras, 426, 2318
+
+\bibitem[\protect\citeauthoryear{{Pequignot}, {Petitjean}  \&
+  {Boisson}}{{Pequignot} et~al.}{1991}]{Pequignot:1991a}
+{Pequignot} D.,  {Petitjean} P.,   {Boisson} C.,  1991, \aap, 251, 680
+
+\bibitem[\protect\citeauthoryear{{Williams}, {Manea}, {Margon}  \&
+  {Morrell}}{{Williams} et~al.}{2021}]{Williams:2021s}
+{Williams} R.,  {Manea} C.,  {Margon} B.,   {Morrell} N.,  2021, \apj, 906, 31
+
+\makeatother
+\end{thebibliography}
