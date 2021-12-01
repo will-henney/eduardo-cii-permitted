@@ -1,10 +1,18 @@
 
 * Plan of action for C II
 
+** 
+
 
 ** General things to look at
 *** Effect of illuminating spectrum
 + We have the comparison between the Trapezium region and the \theta^2 A region for Orion
+  + Different lines behave slightly differently:
+    + 7236 has broad peak to SW of th2A
+      + Region of giant bow in front of HH 204
+        + But maybe not related
+    + 6578 shows the sam but also more extended emission to the E
+      + Possibly related th2B?
 + Comparison with other H II regions?
 *** What is revealed by the fluorescent distribution of C II in Orion?
 + Interior surface of the warm ionized gas
@@ -14,10 +22,16 @@
     + Also 7530.80 but that overlaps C II 7530.57
   + [Ar IV] 4740.17
     + Also 4711.37 but that overlaps with He I 4713.14
++ Other fluorescent lines
+  + N III 4634
+    + We have this with MUSE at poor S/N
+    + But also with PPAK
 + Proplyd bow shocks
   + LV1, LV2, etc
 + Kinematics?
   + Are the C II lines good enough s/n to measure this?
+  + Yes - see [[file:../notebooks/01-KPNO-6578.py]]
+  + Kinematics very similar to [O III]
 *** Comparison with other fluorescent lines
 + O I and N I trace the near PDR
 + Si II has a diversity of distributions
