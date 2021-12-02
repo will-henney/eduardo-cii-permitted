@@ -14,7 +14,8 @@
 #     name: python3
 # ---
 
-# # Extract C II lines from MUSE cube
+# Extract C II lines from MUSE cube
+# =================================
 
 from pathlib import Path
 from astropy.io import fits
@@ -34,7 +35,7 @@ sns.set_context("talk")
 RAW_DATA_PATH = Path.home() / "Dropbox" / "dib-scatter-hii" / "data" / "orion-muse"
 RAW_BIG_DATA_PATH = Path.home() / "Work" / "Muse-Hii-Data" / "M42"
 
-# ## Load data from the smaller cube
+# # Load data from the smaller cube
 
 hdu = fits.open(
     RAW_DATA_PATH / "muse-hr-data-wavsec23-rebin16x16-cont-sub.fits"
@@ -49,9 +50,9 @@ chdu = fits.open(
 true_cont_map = np.sum(chdu.data, axis=0)
 true_cont_map /= np.median(true_cont_map)
 
-# ## The C II 6462 pure recombination line
+# # The C II 6462 pure recombination line
 
-# ### Find the wavelength pixel that corresponds to the rest wavelength of the C II line
+# ## Find the wavelength pixel that corresponds to the rest wavelength of the C II line
 #
 # AtLL gives 2 components: 6461.95 and 6462.13, with $g_k A_{ki}$-weighted wavelength of 6462.05:
 
@@ -59,7 +60,7 @@ wav0_6462 = 6462.05 * u.Angstrom
 k0 = int(w.spectral.world_to_pixel(wav0_6462))
 k0
 
-# ### Look at average spectrum in window around the line
+# ## Look at average spectrum in window around the line
 
 # Take a +/- 50 pixel window around rest wavelength pixel:
 
@@ -171,7 +172,7 @@ for wav, label in line_ids.items():
     toggle *= -1
     
 
-# ### Deal with the sky
+# ## Deal with the sky
 
 # Now try subtracting the average sky spectrum:
 
@@ -223,7 +224,7 @@ ax.set(
 )
 ax.grid(axis="x")
 
-# ### Make the maps of 6462 and adjacent continuum
+# ## Make the maps of 6462 and adjacent continuum
 
 # 770-787 blue continuum. 
 #
@@ -247,17 +248,17 @@ cont_map = myav(
     axis=0,
 )
 cii_map = (fullcube_nosky[788:796, ...] - cont_map).sum(axis=0)
-cii_xmap = (fullcube_nosky[790:795, ...] - cont_map).sum(axis=0)
+cii_xmap = (fullcube_nosky[790:794, ...] - cont_map).sum(axis=0)
 
 fig, ax = plt.subplots(figsize=(12,10))
-ax.imshow(cii_map, vmin=-3e4, vmax=6e5, origin="lower", cmap="gray_r")
+ax.imshow(cii_xmap, vmin=-3e4, vmax=5e5, origin="lower", cmap="gray_r")
 ax.set_title("C II 6462");
 
 fig, ax = plt.subplots(figsize=(12,10))
 smooth = 5
 ax.imshow(
-    median_filter(cii_map, size=smooth), 
-    vmin=-3e4, vmax=6e5, origin="lower", cmap="gray_r")
+    median_filter(cii_xmap, size=smooth), 
+    vmin=-3e4, vmax=5e5, origin="lower", cmap="gray_r")
 ax.set_title("C II 6462");
 
 fig, ax = plt.subplots(figsize=(12,10))
@@ -271,7 +272,7 @@ ax.imshow(
     vmin=-2e3, vmax=1e5, origin="lower", cmap="gray_r")
 ax.set_title("Continuum that is mainly Raman wing");
 
-# ### Look at the true continuum and make a star mask
+# # Look at the true continuum and make a star mask
 
 fig, ax = plt.subplots(figsize=(12,10))
 ax.imshow(
@@ -288,7 +289,7 @@ ax.set_title("True continuum that was already removed");
 starmask = true_cont_map > 300.0
 # -
 
-# ## Extract H alpha line for comparison with C II
+# # Extract H alpha line for comparison with C II
 
 wav0_6563 = 6562.79 * u.Angstrom
 k0 = int(w.spectral.world_to_pixel(wav0_6563))
@@ -340,7 +341,7 @@ cont_map_ha = myav(
     np.stack([cont_map_red, cont_map_blue]),
     axis=0,
 )
-ha_map = (fullcube_nosky[906:916, ...] - cont_map_ha).sum(axis=0)
+ha_map = (fullcube_nosky[907:915, ...] - cont_map_ha).sum(axis=0)
 ha_xmap = (fullcube_nosky[909:913, ...] - cont_map_ha).sum(axis=0)
 
 fig, ax = plt.subplots(figsize=(12,10))
@@ -368,7 +369,7 @@ ax.imshow(
 )
 ax.set_title("Near continuum / Hα 6563");
 
-# ### Ratio of 6462 to Ha
+# ## Ratio of 6462 to Ha
 
 fig, ax = plt.subplots(figsize=(12,10))
 mask = ha_map < 1 * np.median(ha_map)
@@ -406,7 +407,7 @@ ax.set_title(f"C II 6462 / Hα 6563   median filtered ({smooth} pixels)");
 
 # So the typical value is 1e-4.  We can estimate the C++/H+ abundance by looking at the effective recombination rates.
 
-# ## Now try and extract C II 6578
+# # Now try and extract C II 6578
 
 # Make use of the sky-subtracted cube that we already have.  Extract a wide-ish window centered on the Ha line since we want to have a food sampling of the two [N II] lines and of the Ha wings:
 
@@ -433,7 +434,7 @@ kshift
 kwindow = wav2k(window_wavs)
 kfull = np.arange(nwavs)
 
-# ### Fit and remove the Raman wings
+# ## Fit and remove the Raman wings
 
 # We fit two polynomials to the Ha wings: 
 # * `p` is fitted to the blue wing and is subtracted from the 6548 profile before shifting it. 
@@ -444,13 +445,13 @@ p2 = T.fit(kwindow[-40:], window_median[-40:], deg=2)
 
 # We will use the same shape of polynomial for all pixels, so we don't have to do lots of fitting, which would be slow.
 #
-# We calculate the median of the ratio of the true wing to the polynomial, which we will use for scaling it. This is about 96% in the blue wing becaouse it cuts out all teh faint lines, which had pulled up the fit a bit. 
+# We calculate the median of the ratio of the true wing to the polynomial, which we will use for scaling it. This is about 96% in the blue wing because it cuts out all the faint lines, which had pulled up the fit a bit. 
 
 fac1 = np.median(window_median[:45] / p1(kwindow[:45]))
 fac2 = np.median(window_median[-40:] / p2(kwindow[-40:]))
 fac1, fac2
 
-# ### Shift/interpolate/scale the 6548 line to subtract from 6583
+# ## Shift/interpolate/scale the 6548 line to subtract from 6583
 
 # Make a version of the wing-subtracted 6548 profile that is shifted and interpolated to account for the wavelength difference between 6548 and 6583. We multiply by 3 to account for the A ratio and only subtract scale factor times the polynomial.
 
@@ -461,7 +462,7 @@ window_shift = np.interp(
     nii_A_ratio * (window_median - fac1 * p1(kwindow)),
 )
 
-# ### Slight smoothing of original profile to match diffusive interpolation
+# ## Slight smoothing of original profile to match diffusive interpolation
 
 # The linear interpolation causes a small amount of smoothing.  Therefore, we must also apply smoothing to the original profile, otherwise we will get ringing artefacts when we do the subtraction.  I use a 3-pixel peaked kernel that sums to 1, where `delta` is the relative height of the "wing" pixels, which I determine by trial and error. 
 
@@ -521,7 +522,7 @@ ax.grid(axis="x")
 
 # So it looks like pixels 925–932 span the entire line. However, at 931 the C II contribution is only 10% of the total, so there will be lots of noise.  And at 932 the C II contribution is essentially zero and the [N II] contamination is enormous. 
 
-# ### Now apply the same procedure pixel-by-pixel to make map of 6578
+# ## Now apply the same procedure pixel-by-pixel to make map of 6578
 
 # First, do the wings:
 
@@ -575,11 +576,11 @@ window_cube_extract = (
     - fac2[None, :, :] * p2(kwindow)[:, None, None]
 )
 cii6578_map = np.sum(
-    window_cube_extract[925 - kw0:932 - kw0, ...],
+    window_cube_extract[925 - kw0:933 - kw0, ...],
     axis=0,
 )
 cii6578_xmap = np.sum(
-    window_cube_extract[927 - kw0:930 - kw0, ...],
+    window_cube_extract[927 - kw0:931 - kw0, ...],
     axis=0,
 )
 
@@ -588,7 +589,7 @@ im = ax.imshow(cii6578_xmap, vmin=-3e4, vmax=5e6, origin="lower", cmap="gray_r")
 fig.colorbar(im, ax=ax)
 ax.set_title("C II 6578");
 
-# ### Ratio of 6462 / 6578
+# ## Ratio of 6462 / 6578
 #
 # This is similar to the 4267 / 6578 ratio that Eduardo was estimating.  There should be a particular value predicted for recombination.
 #
@@ -613,15 +614,15 @@ mask = mask | starmask
 ratio = median_filter(mapA, smooth) / median_filter(mapB, smooth)
 av_ratio = np.sum(mapA[~mask]) / np.sum(mapB[~mask])
 ratio[mask] = np.nan
-im = ax.imshow(ratio, vmin=0.03, vmax=0.22, origin="lower", cmap="magma")
+im = ax.imshow(ratio, vmin=0.03, vmax=0.195, origin="lower", cmap="magma")
 fig.colorbar(im, ax=ax)
 ax.set_title(
     f"C II 6462 / 6578 : mean = {av_ratio:.3f}"
 );
 
-# So that looks really good, even without any smoothing.  The highest values are close to the predicted pure-recomb value of 0.2. 
+# So that looks really good, even without any smoothing.  The highest values a bit less than the predicted pure-recomb value of 0.195. 
 #
-# x = (0.2 / 0.12) - 1 = 67% is the average fluorescence fraction, which has peaks of (0.2 / 0.05) - 1 =300 % 
+# x = (0.195 / 0.083) - 1 = 135% is the average fluorescence fraction, which has peaks of (0.195 / 0.04) - 1 = 400% around th2A
 #
 #
 
@@ -636,24 +637,24 @@ im = ax.imshow(ratio, vmin=-0.5, vmax=25, origin="lower", cmap="magma")
 fig.colorbar(im, ax=ax)
 ax.set_title("C II 6578 / 6462");
 
+# ## Subtract recombination contribution to get pure fluorescent 6578 emission
+
 fig, ax = plt.subplots(figsize=(12,8))
 FACTOR = 0.195
 excess = cii6578_xmap - cii_xmap / FACTOR
 im = ax.imshow(
     median_filter(excess, size=1), 
-    vmin=-2e5, vmax=2e6, 
+    vmin=-2e5, vmax=3.5e6, 
     origin="lower", 
     cmap="inferno",
 )
 fig.colorbar(im, ax=ax)
 ax.set_title(fr"C II 6578 $-$ C II 6462 / {FACTOR}");
 
-
+# Ratio of fluorescent excess to H alpha.
 
 fig, ax = plt.subplots(figsize=(12,10))
 mask = ha_map < 0.3 * np.median(ha_map)
-FACTOR = 0.195
-excess = cii6578_xmap - cii_xmap / FACTOR
 ratio = excess / ha_xmap
 ratio[mask] = np.nan
 im = ax.imshow(
@@ -665,6 +666,8 @@ im = ax.imshow(
 )
 fig.colorbar(im, ax=ax)
 ax.set_title("Fluorescent C II 6578 / Hα 6563");
+
+# This really empasises the th2A region because the H alpha is weak there. 
 
 fig, ax = plt.subplots(figsize=(12,10))
 mask = ha_map < 0.3 * np.median(ha_map)
@@ -759,10 +762,6 @@ line_strengths_678X = {
     6812.28: 0.2,
 }
 
-
-
-
-
 wav0_678X = 6785.85 * u.Angstrom
 k0_678X = int(w.spectral.world_to_pixel(wav0_678X))
 k0_678X
@@ -784,7 +783,7 @@ ax.axvline(wav0_678X.value, color="k", linestyle="dotted", alpha=0.3)
 ax.axhline(0.0, color="k", linestyle="dotted", alpha=0.3)
 ax.set(
     ylim=[-30000, 30000],
-)
+);
 #ax.plot(window_wavs, window_mean)
 
 # So there is not much clean continuum around there.  We have the [S II] lines to the blue and the terrestrial absorption to the red.  However, we seem to have a good detection of three lines.  
@@ -860,9 +859,9 @@ cont_map_678X = myav(
     np.stack([cont_map_678X_red, cont_map_678X_blue]),
     axis=0,
 )
-cii6780_map = (fullcube_nosky[1165:1171, ...] - cont_map_678X).sum(axis=0)
-cii6787_map = (fullcube_nosky[1172:1178, ...] - cont_map_678X).sum(axis=0)
-cii6792_map = (fullcube_nosky[1178:1184, ...] - cont_map_678X).sum(axis=0)
+cii6780_map = (fullcube_nosky[1164:1171, ...] - cont_map_678X).sum(axis=0)
+cii6787_map = (fullcube_nosky[1171:1178, ...] - cont_map_678X).sum(axis=0)
+cii6792_map = (fullcube_nosky[1178:1185, ...] - cont_map_678X).sum(axis=0)
 
 fig, axes = plt.subplots(
     3, 2, 
@@ -890,12 +889,13 @@ fig.colorbar(im, ax=axes)
 #
 # So the 6780 and 6787 components look vahely like one would expect for a C II line.  Bt the 6792 is clearly contaminated with something else. 
 
-# Also try taking a narrower window of 3 pixels to see if that improves the signal to noise. 
+# ## Use narrower wavelength window
+
+# Also try taking a narrower window of 4 pixels to see if that improves the signal to noise. 
 #
 
-cii6780_xmap = (fullcube_nosky[1166:1169, ...] - cont_map_678X).sum(axis=0)
-cii6787_xmap = (fullcube_nosky[1173:1176, ...] - cont_map_678X).sum(axis=0)
-cii6792_xmap = (fullcube_nosky[1180:1183, ...] - cont_map_678X).sum(axis=0)
+cii6787_xmap = (fullcube_nosky[1173:1177, ...] - cont_map_678X).sum(axis=0)
+cii6792_xmap = (fullcube_nosky[1179:1183, ...] - cont_map_678X).sum(axis=0)
 
 fig, axes = plt.subplots(
     3, 2, 
@@ -929,6 +929,10 @@ fig.colorbar(im, ax=axes)
 # So that actually improves the s/n quite a bit.  However, it may have resulted in the loss of some flux, which we will correct in a moment. 
 # I have swapped the continuum panel for the sum of 6780+6787. I don't include 6792 in the sum since it clearly has a different distribution near the bar – probably blend with a low-ionization line like Fe II. 
 
+# This has now been retrofitted to all the other lines.
+
+# ### How much flux is lost in the narrower wavelength windows?
+
 for f in [np.median, np.sum, np.max]:
     print(f)
     for _xmap, _map, label in [
@@ -940,39 +944,19 @@ for f in [np.median, np.sum, np.max]:
     ]:
         print(f"{label}:", f(_xmap) / f(_map))
 
-fig, axes = plt.subplots(
-    2, 2, 
-    figsize=(12,8),
-    sharex=True,
-    sharey=True,
-)
-mask = ha_map < 0.7 * np.median(ha_map)
-smooth = 6
-for ax, _map, label, FACTOR in zip(
-    axes.flat,
-    [
-        cii6780_xmap, 
-        cii6780_xmap + cii6787_xmap,# + cii6792_xmap,
-        cii6578_map,
-        cii_map,
-    ],
-    ["6780", "6780+", "6578", "6462"],
-    [40_000, 25_000, 700, 7000],
-):
-    ratio = median_filter(_map, smooth) / median_filter(ha_map, smooth)
-    ratio[mask] = np.nan
-    im = ax.imshow(
-        FACTOR * ratio, 
-        vmin=0.1, vmax=1.0, 
-        origin="lower", cmap="magma",
-    )
-    ax.set_title(fr"{FACTOR} $\times$ C II {label} / Ha");
-fig.colorbar(im, ax=axes);
+# The previous cell calculates the ratio of the narrow window (4 pixels) to the wide window (8 or 7 pixels) for each line, taking the median, sum, or max over the whole map. 
+#
+# There is not much difference between the median and the sum. We will use the median.
+#
+# For the 6780+ lines it is bigger than 100%, which means that the wide windows must include pixels that are on average *below* the estimated continuum.  This probably means that the continuum is not well estimated! (Maybe the continuum range includes some weak lines).  Whatever the reason, it is best to use the narrow window. 
+#
+# For the other lines, it is around 80%, which seems reasonable.  Obviously, the most reliable estimate is for H alpha, which is 81%. 
+# It is probably best to assume that it is the same for all lines, in which case there is no need to make any correction when taking line ratios, so long as all lines use the same narrow window. 
+#
+# On the other hand, if we ever want absolute fluxes, we have to remember to divide by 0.8 (multiply by 1.25). 
+#
+# For 6462, the value is 74%, which is slightly less. However, the most likely explanation is that the wings are contaminated by a blend with another line.  In that case, the narrow indow is still best, and there is no need to make any correction to the ratios. 
 
-
-# These just look a mess, unfortunately.  There is a vague resemblance between 6780 and 6462, especially at the Bright Bar.  This suggests that the line is about 5 times weaker than 6462
-
-mask = ha_map > np.median(ha_map)
 
 
 # # Look at the higher fluorescent lines $\lambda\lambda$ 6257, 6260
@@ -993,7 +977,162 @@ mask = ha_map > np.median(ha_map)
 # gk*Aki weighted average wavelength:    6258.79        
 # ```
 
+line_strengths_6259 = {
+    6257.18: 3.1,
+    6259.56: 3.8,
+    6259.80: 0.6,
+}
 
+wav0_6259 = 6258.79 * u.Angstrom
+k0_6259 = int(w.spectral.world_to_pixel(wav0_6259))
+k0_6259
+
+NWIN = 300
+window_slice = slice(k0_6259 - (NWIN//2), k0_6259 + (NWIN//2) + 1)
+window_cube = fullcube_nosky[window_slice, ...]
+window_wavs = wavs[window_slice]
+#window_norm = window_cube/ np.median(window_cube, axis=0)
+window_median = np.median(window_cube, axis=(1, 2))
+window_mean = np.mean(window_cube, axis=(1, 2))
+
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.plot(window_wavs, window_mean, alpha=0.7, linewidth=0.8)
+ax.plot(window_wavs, window_median)
+ax.axvline(wav0_6259.value, color="k", linestyle="dotted", alpha=0.3)
+ax.axhline(0.0, color="k", linestyle="dotted", alpha=0.3)
+ax.set(
+    ylim=[-30000, 30000],
+);
+
+# So we still have a bit of Raman wing here. And there is some terrestrial absorption redward of 6270.  There looks like a chance of getting a reasonable continuum though.
+#
+# Now take a smaller window:
+
+NWIN = 100
+window_slice = slice(k0_6259 - (NWIN//2), k0_6259 + (NWIN//2) + 1)
+window_cube = fullcube_nosky[window_slice, ...]
+window_wavs = wavs[window_slice]
+kwavs = kfull[window_slice]
+window_median = np.median(window_cube, axis=(1, 2))
+window_mean = np.mean(window_cube, axis=(1, 2))
+
+# +
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.plot(window_wavs, window_mean, alpha=0.7, linewidth=0.8)
+ax.plot(window_wavs, window_median, marker="o")
+for wav, strength in line_strengths_6259.items():
+    ax.annotate(
+        " ", 
+        (wav, 4000), 
+        xytext=(0, 15 * strength), 
+        textcoords="offset points",
+        ha="center",
+        arrowprops=dict(arrowstyle="-"),
+    )
+
+ax.axvline(wav0_6259.value, color="k", linestyle="dotted", alpha=0.3)
+ax.axhline(0.0, color="k", linestyle="dotted", alpha=0.3)
+ax.set(
+    ylim=[-3000, 8000],
+)
+# -
+
+# So there is not much point in separating the components. We should just add up the entire multiplet.
+#
+# As a first try, I am tempted to not even subtract any continuum.  It may be that it is all just a bunch of blended lines. 
+
+NWIN = 50
+window_slice = slice(k0_6259 - (NWIN//2), k0_6259 + (NWIN//2) + 1)
+window_cube = fullcube_nosky[window_slice, ...]
+window_wavs = wavs[window_slice]
+kwavs = kfull[window_slice]
+window_median = np.median(window_cube, axis=(1, 2))
+window_mean = np.mean(window_cube, axis=(1, 2))
+
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.plot(kwavs, window_mean, alpha=0.7, linewidth=0.8)
+ax.plot(kwavs, window_median, marker="o")
+ax.axvline(k0_6259, color="k", linestyle="dotted", alpha=0.3)
+ax.axhline(0.0, color="k", linestyle="dotted", alpha=0.3)
+ax.grid(axis="x")
+ax.set(
+    ylim=[-3000, 8000],
+)
+
+# Looks like 550 - 556 will get most of it.
+
+cii6259_xmap = (fullcube_nosky[550:557, ...]).sum(axis=0)
+
+fig, ax = plt.subplots(figsize=(12,10))
+ax.imshow(cii6259_xmap, vmin=-3e4, vmax=5e5, origin="lower", cmap="gray_r")
+ax.set_title("C II 6259");
+
+
+
+
+
+# # Ratios of various lines with respect to Ha
+
+fig, axes = plt.subplots(
+    3, 2, 
+    figsize=(12, 12),
+    sharex=True,
+    sharey=True,
+)
+mask = ha_map < 0.7 * np.median(ha_map)
+mask = mask | starmask
+smooth = 6
+for ax, _mapA, _mapB, labelA, labelB, FACTOR in zip(
+    axes.flat,
+    [
+        (
+            cii6780_xmap +
+            cii6787_xmap
+        ), 
+        (
+            cii6780_xmap +
+            cii6787_xmap
+        ), 
+        cii6578_xmap,
+        cii_xmap,
+        cii6259_xmap,
+        cii6259_xmap,
+    ],
+    [cii_xmap, ha_xmap, ha_map, ha_xmap, cii_xmap, ha_xmap, ],
+    ["6780+", "6780+", "6578", "6462", "6259", "6259"],
+    ["6462"] + [r"H$\alpha$"] * 3 + ["6462", r"H$\alpha$"],
+    [1, 15_000, 600, 7_000, 0.7, 10_000],
+):
+    ratio = median_filter(_mapA, smooth) / median_filter(_mapB, smooth)
+    ratio[mask] = np.nan
+    im = ax.imshow(
+        FACTOR * ratio, 
+        vmin=0.1, vmax=1.0, 
+        origin="lower", cmap="magma",
+    )
+    ax.set_title(fr"{FACTOR} $\times$ C II {labelA} / {labelB}");
+fig.colorbar(im, ax=axes);
+
+
+# + [markdown] tags=[]
+# These look a lot more convincing now that I am using the narrow window.  
+# The first row shows sum of (6780 + 6787) over 6462 (left) or over Ha (right).  Similar features can be seen in both, which I suspect might be due to contamination by a blend with some low-ionization line. Possibly [Fe II]. 
+#
+# The second row shows the fluorescent line 6578 (left) and the recombination line 6462 (right).  The 6780+ lines do not resemble 6578 at all. They show no signs of any of the 3 fluorescent peaks (Trapezium, Big Arc, and th2A). 
+#
+# There is a slight resemblance between 6780+/Ha and 6462/Ha, especially at the Bright Bar.  But in many other respects it is different. There is a ridge of high 6790+/Ha that runs SE from near the Trapezium. 
+#
+# If we ignore all that and just look at the values in the recombination emission near the bright bar, then we find 6780+/6462 is about 
+
+# + jupyter={"source_hidden": true} tags=[]
+select_mask = ~mask & (7000 * cii_xmap > 0.5 * ha_map)
+ratio = (cii6780_xmap + cii6787_xmap)[select_mask].sum()
+ratio /= cii_xmap[select_mask].sum()
+ratio
+
+# + jupyter={"source_hidden": true} tags=[]
+So about 0.3
+# -
 
 # # Compare with the redder lines: 3d-3p $\lambda\lambda$7231, 7236
 
@@ -1008,13 +1147,19 @@ WCS(cii7236_hdu.header)
 
 cii7236_map = cii7236_hdu.data
 
+# + tags=[]
 fig, ax = plt.subplots(figsize=(12,10))
 im = ax.imshow(cii7236_map, vmin=-1e2, vmax=3e4, origin="lower", cmap="gray_r")
 fig.colorbar(im, ax=ax)
 ax.set_title("C II 7236");
+# -
 
 ha_map2 = fits.open(
     DATA_PATH / "orig-muse" / "linesum-H_I-6563-bin016.fits"
+)["SCALED"].data
+
+cii7231_map = fits.open(
+    DATA_PATH / "orig-muse" / "linesum-C_II-7231-bin016.fits"
 )["SCALED"].data
 
 xslice, yslice = slice(0, 400), slice(900, 1200)
@@ -1030,10 +1175,6 @@ im = ax.imshow(
 )
 fig.colorbar(im, ax=ax)
 ax.set_title("C II 7236 / Ha 6563");
-
-cii7231_map = fits.open(
-    DATA_PATH / "orig-muse" / "linesum-C_II-7231-bin016.fits"
-)["SCALED"].data
 
 fig, ax = plt.subplots(figsize=(12,10))
 im = ax.imshow(
@@ -1071,7 +1212,17 @@ ax.set_title("C II 7231 / 7236");
 #
 # This might be related to density or it might be due to the excitation mechanism.  For recombination, there is a critical density above which the multiplet ratios take the LTE values (proportional to statistical weights). 
 
-cii723X_map = (cii7231_map - sky7231) + (cii7231_map - sky7231)
+cii723X_map = (cii7236_map - sky7236) + (cii7231_map - sky7231)
+
+fig, ax = plt.subplots(figsize=(12,10))
+im = ax.imshow(
+    cii723X_map / ha_map2, 
+    vmin=0.0, vmax=0.003,
+    origin="lower", 
+    cmap="gray"
+)
+fig.colorbar(im, ax=ax)
+ax.set_title("C II 7231 + 7236 / Ha 6563");
 
 # To make further progress, I need to get everything on the same grid.  
 #
