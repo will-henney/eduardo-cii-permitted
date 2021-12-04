@@ -520,7 +520,7 @@ ratio = cii_map / oiii_map
 axes[0].imshow(
     ratio, 
     origin="lower", 
-    vmin=0, vmax=0.1, 
+    vmin=0, vmax=0.05, 
     cmap="gray",
 )
 axes[0].set_title("C II 6578 Å / [O III] 5007 Å")

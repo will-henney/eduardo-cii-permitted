@@ -407,6 +407,97 @@ ax.set_title(f"C II 6462 / Hα 6563   median filtered ({smooth} pixels)");
 
 # So the typical value is 1e-4.  We can estimate the C++/H+ abundance by looking at the effective recombination rates.
 
+# # C II 6151 6f–4d: a weaker recombination line
+
+wav0_6151 = 6151.43 * u.Angstrom
+k0_6151 = int(w.spectral.world_to_pixel(wav0_6151))
+k0_6151
+
+NWIN = 300
+window_slice = slice(k0_6151 - (NWIN//2), k0_6151 + (NWIN//2) + 1)
+window_cube = fullcube_nosky[window_slice, ...]
+window_wavs = wavs[window_slice]
+window_median = np.median(window_cube, axis=(1, 2))
+window_mean = np.mean(window_cube, axis=(1, 2))
+
+# + tags=[]
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.plot(window_wavs, window_mean, alpha=0.7, linewidth=0.8)
+ax.plot(window_wavs, window_median)
+ax.axvline(wav0_6151.value, color="k", linestyle="dotted", alpha=0.3)
+ax.axhline(0.0, color="k", linestyle="dotted", alpha=0.3)
+ax.set(
+    ylim=[-30000, 30000],
+);
+#ax.plot(window_wavs, window_mean)
+# -
+
+# Looks good! Now zoom in.
+
+NWIN = 100
+window_slice = slice(k0_6151 - (NWIN//2), k0_6151 + (NWIN//2) + 1)
+window_cube = fullcube_nosky[window_slice, ...]
+window_wavs = wavs[window_slice]
+kwavs = kfull[window_slice]
+window_median = np.median(window_cube, axis=(1, 2))
+window_mean = np.mean(window_cube, axis=(1, 2))
+
+# +
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.plot(window_wavs, window_mean, alpha=0.7, linewidth=0.8)
+ax.plot(window_wavs, window_median, marker="o")
+
+ax.axvline(wav0_6151.value, color="k", linestyle="dotted", alpha=0.3)
+ax.axhline(0.0, color="k", linestyle="dotted", alpha=0.3)
+ax.set(
+    ylim=[-3000, 12000],
+)
+# -
+
+# Looks like there is no need for any further continuum subtraction. Use the usual 4-pixel narrow window:
+
+# + tags=[]
+NWIN = 30
+window_slice = slice(k0_6151 - (NWIN//2), k0_6151 + (NWIN//2) + 1)
+window_cube = fullcube_nosky[window_slice, ...]
+window_wavs = wavs[window_slice]
+kwavs = kfull[window_slice]
+window_median = np.median(window_cube, axis=(1, 2))
+window_mean = np.mean(window_cube, axis=(1, 2))
+# -
+
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.plot(kwavs, window_mean, alpha=0.7, linewidth=0.8)
+ax.plot(kwavs, window_median, marker="o")
+ax.axvline(k0_6151, color="k", linestyle="dotted", alpha=0.3)
+ax.axhline(0.0, color="k", linestyle="dotted", alpha=0.3)
+ax.grid(axis="x")
+ax.set(
+    ylim=[-3000, 12000],
+)
+
+# So, 426 to 429 for the line.
+
+cii6151_xmap = (fullcube_nosky[426:430, ...]).sum(axis=0)
+
+fig, ax = plt.subplots(figsize=(12,10))
+ax.imshow(cii6151_xmap, vmin=-2e4, vmax=3e5, origin="lower", cmap="gray_r")
+ax.set_title("C II 6151");
+
+fig, ax = plt.subplots(figsize=(12,10))
+smooth = 8
+ratio = median_filter(cii6151_xmap, smooth) / median_filter(cii_xmap, smooth)
+mask = ha_map < 0.5 * np.median(ha_map)
+ratio[mask] = np.nan
+ax.imshow(ratio, vmin=-0.05, vmax=0.7, origin="lower", cmap="gray_r")
+ax.set_title("C II 6151 / 6462");
+
+
+
+
+
+
+
 # # Now try and extract C II 6578
 
 # Make use of the sky-subtracted cube that we already have.  Extract a wide-ish window centered on the Ha line since we want to have a food sampling of the two [N II] lines and of the Ha wings:
@@ -776,6 +867,7 @@ window_wavs = wavs[window_slice]
 window_median = np.median(window_cube, axis=(1, 2))
 window_mean = np.mean(window_cube, axis=(1, 2))
 
+# + jupyter={"source_hidden": true} tags=[]
 fig, ax = plt.subplots(figsize=(12, 4))
 ax.plot(window_wavs, window_mean, alpha=0.7, linewidth=0.8)
 ax.plot(window_wavs, window_median)
@@ -785,6 +877,7 @@ ax.set(
     ylim=[-30000, 30000],
 );
 #ax.plot(window_wavs, window_mean)
+# -
 
 # So there is not much clean continuum around there.  We have the [S II] lines to the blue and the terrestrial absorption to the red.  However, we seem to have a good detection of three lines.  
 #
@@ -826,6 +919,7 @@ ax.set(
 #
 # Now plot again, but as a function of pixel and zoomed in even more:
 
+# + tags=[]
 NWIN = 50
 window_slice = slice(k0_678X - (NWIN//2), k0_678X + (NWIN//2) + 1)
 window_cube = fullcube_nosky[window_slice, ...]
@@ -834,6 +928,7 @@ kwavs = kfull[window_slice]
 #window_norm = window_cube/ np.median(window_cube, axis=0)
 window_median = np.median(window_cube, axis=(1, 2))
 window_mean = np.mean(window_cube, axis=(1, 2))
+# -
 
 fig, ax = plt.subplots(figsize=(12, 4))
 ax.plot(kwavs, window_mean, alpha=0.7, linewidth=0.8)
@@ -1074,8 +1169,8 @@ ax.set_title("C II 6259");
 # # Ratios of various lines with respect to Ha
 
 fig, axes = plt.subplots(
-    3, 2, 
-    figsize=(12, 12),
+    4, 2, 
+    figsize=(12, 16),
     sharex=True,
     sharey=True,
 )
@@ -1095,13 +1190,15 @@ for ax, _mapA, _mapB, labelA, labelB, FACTOR in zip(
         ), 
         cii6578_xmap,
         cii_xmap,
+        cii6151_xmap,
+        cii6151_xmap,
         cii6259_xmap,
         cii6259_xmap,
     ],
-    [cii_xmap, ha_xmap, ha_map, ha_xmap, cii_xmap, ha_xmap, ],
-    ["6780+", "6780+", "6578", "6462", "6259", "6259"],
-    ["6462"] + [r"H$\alpha$"] * 3 + ["6462", r"H$\alpha$"],
-    [1, 15_000, 600, 7_000, 0.7, 10_000],
+    [cii_xmap, ha_xmap, ha_map, ha_xmap, cii_xmap, ha_xmap, cii_xmap, ha_xmap, ],
+    ["6780+", "6780+", "6578", "6462", "6151", "6151", "6259", "6259"],
+    ["6462"] + [r"H$\alpha$"] * 3 + ["6462", r"H$\alpha$"] * 2,
+    [1, 15_000, 600, 7_000, 1.2, 15_000, 0.7, 10_000],
 ):
     ratio = median_filter(_mapA, smooth) / median_filter(_mapB, smooth)
     ratio[mask] = np.nan
@@ -1140,7 +1237,7 @@ So about 0.3
 
 DATA_PATH = Path.cwd().parent / "data" 
 cii7236_hdu = fits.open(
-    DATA_PATH / "orig-muse" / "linesum-C_II-7236-bin016.fits"
+    DATA_PATH / "orig-muse" / "linesum-C_II-7236-bin002.fits"
 )["SCALED"]
 
 WCS(cii7236_hdu.header)
@@ -1155,11 +1252,11 @@ ax.set_title("C II 7236");
 # -
 
 ha_map2 = fits.open(
-    DATA_PATH / "orig-muse" / "linesum-H_I-6563-bin016.fits"
+    DATA_PATH / "orig-muse" / "linesum-H_I-6563-bin002.fits"
 )["SCALED"].data
 
 cii7231_map = fits.open(
-    DATA_PATH / "orig-muse" / "linesum-C_II-7231-bin016.fits"
+    DATA_PATH / "orig-muse" / "linesum-C_II-7231-bin002.fits"
 )["SCALED"].data
 
 xslice, yslice = slice(0, 400), slice(900, 1200)
@@ -1191,8 +1288,8 @@ from scipy.signal import medfilt2d
 
 fig, ax = plt.subplots(figsize=(12,10))
 
-mask =  cii7236_map < 0.8 * np.median(cii7236_map)
-smooth = 1
+mask =  cii7236_map < 0.1 * np.median(cii7236_map)
+smooth = 0
 ratio = (
     medfilt2d(cii7231_map - sky7231, 16 * smooth + 1) 
     / medfilt2d(cii7236_map - sky7236, 16 * smooth + 1)
@@ -1212,17 +1309,136 @@ ax.set_title("C II 7231 / 7236");
 #
 # This might be related to density or it might be due to the excitation mechanism.  For recombination, there is a critical density above which the multiplet ratios take the LTE values (proportional to statistical weights). 
 
-cii723X_map = (cii7236_map - sky7236) + (cii7231_map - sky7231)
+# +
+xslice, yslice = slice(0, 200), slice(900, 1200)
+_bins = "016", "008", "004", "002", "001"
+cii723X_multimap = np.zeros_like(cii7231_map)
+ha_multimap = np.zeros_like(cii7231_map)
+umbrales = 0.7, 1.5, 3.0, 9.0, 12.0
+for _bin, umbral in zip(_bins, umbrales):
+    ha_map2 = fits.open(
+        DATA_PATH / "orig-muse" / f"linesum-H_I-6563-bin{_bin}.fits"
+    )["SCALED"].data
+    cii7236_map = fits.open(
+        DATA_PATH / "orig-muse" / f"linesum-C_II-7236-bin{_bin}.fits"
+    )["SCALED"].data
+    cii7231_map = fits.open(
+        DATA_PATH / "orig-muse" / f"linesum-C_II-7231-bin{_bin}.fits"
+    )["SCALED"].data
+    sky7236 = np.median(cii7236_map[yslice, xslice])
+    sky7231 = np.median(cii7231_map[yslice, xslice])
+    skyha = np.median(ha_map2[yslice, xslice])
+    cii723X_map = (cii7236_map - sky7236) + (cii7231_map - sky7231)
+    if _bin == "016":
+        ha_map2_base = ha_map2
+        cii723X_map_base = cii723X_map
+        cii723X_multimap[...] = np.median(cii723X_map_base)
+        ha_multimap[...] = np.median(ha_map2_base)
+    mask = cii723X_map_base >= umbral * np.median(cii723X_map_base)
+    print(_bin, mask.sum())
+    #mask = mask & (ha_map2_base >= umbral * np.median(ha_map2_base))
+    cii723X_multimap[mask] = cii723X_map[mask]
+    ha_multimap[mask] = ha_map2[mask] - skyha
 
-fig, ax = plt.subplots(figsize=(12,10))
+    
+
+# -
+
+ratio = cii723X_multimap / ha_multimap
+fits.PrimaryHDU(
+    header=cii7236_hdu.header,
+    data=ratio,
+).writeto(
+    DATA_PATH / "orig-muse" / "ratio-723X-6563-multibin.fits",
+    overwrite=True,
+)
+
+# Make a version for the paper. But the true version is made in the Org file now.
+
+fig, ax = plt.subplots(
+    figsize=(12,9),
+    subplot_kw=dict(projection=WCS(cii7236_hdu.header)),
+)
 im = ax.imshow(
-    cii723X_map / ha_map2, 
-    vmin=0.0, vmax=0.003,
+    ratio, 
+    vmin=0.0, vmax=0.004,
     origin="lower", 
     cmap="gray"
 )
+#fig.colorbar(im, ax=ax)
+ax.set(xlabel="RA (J2000)", ylabel="Dec (J2000)")
+ax.set_title(
+    "(C II λλ7231 + 7236) / Hα λ6563", 
+    pad=12,
+    y=0.0,
+    fontweight="bold",
+    color="w",
+)
+...;
+
+# +
+xslice, yslice = slice(0, 200), slice(900, 1200)
+_bins = "256", "128", "064", "032", "016", "008", "004", "002", "001"
+cii7231_multimap = np.zeros_like(cii7231_map)
+cii7236_multimap = np.zeros_like(cii7231_map)
+umbrales = 0.5, 0.75, 1.0, 2.0, 3.0, 6.0, 12.0, 200.0, 500.0
+for _bin, umbral in zip(_bins, umbrales):
+    cii7236_map = fits.open(
+        DATA_PATH / "orig-muse" / f"linesum-C_II-7236-bin{_bin}.fits"
+    )["SCALED"].data
+    cii7231_map = fits.open(
+        DATA_PATH / "orig-muse" / f"linesum-C_II-7231-bin{_bin}.fits"
+    )["SCALED"].data
+    sky7236 = np.median(cii7236_map[yslice, xslice])
+    sky7231 = np.median(cii7231_map[yslice, xslice])
+    if _bin == _bins[0]:
+        cii7231_map_base = cii7231_map
+        cii7236_map_base = cii7236_map
+        cii7231_multimap[...] = np.nanmedian(cii7231_map_base) - sky7231
+        cii7236_multimap[...] = np.nanmedian(cii7236_map_base) - sky7236
+    mask = cii7236_map >= umbral * np.median(cii7236_map)
+    print(_bin, mask.sum())
+    #mask = mask & (ha_map2_base >= umbral * np.median(ha_map2_base))
+    cii7231_multimap[mask] = cii7231_map[mask] - sky7231
+    cii7236_multimap[mask] = cii7236_map[mask] - sky7236
+
+    
+
+# -
+
+ratio_multiplet = cii7231_multimap / cii7236_multimap
+fits.PrimaryHDU(
+    header=cii7236_hdu.header,
+    data=ratio,
+).writeto(
+    DATA_PATH / "orig-muse" / "ratio-7231-7236-multibin.fits",
+    overwrite=True,
+)
+
+fig, ax = plt.subplots(
+    figsize=(12,9),
+    subplot_kw=dict(projection=WCS(cii7236_hdu.header)),
+)
+im = ax.imshow(
+    ratio_multiplet, 
+    vmin=0.5, vmax=0.75,
+    origin="lower", 
+    cmap="magma"
+)
 fig.colorbar(im, ax=ax)
-ax.set_title("C II 7231 + 7236 / Ha 6563");
+ax.contour(
+    ratio, 
+    levels=[0.002, 0.003], 
+    colors=["c", "b"], alpha=0.5, linewidths=[1., 2.])
+ax.set(xlabel="RA (J2000)", ylabel="Dec (J2000)")
+ax.set_title(
+    "C II λ7231 / λ7236", 
+    pad=12,
+    y=0.0,
+    fontweight="bold",
+    color="w",
+)
+...;
 
 # To make further progress, I need to get everything on the same grid.  
 #

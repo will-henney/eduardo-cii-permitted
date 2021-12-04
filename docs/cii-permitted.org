@@ -151,6 +151,188 @@ Effective recombination coefficients (units 1e-14 cm^3/s) for different T (units
 + Also has C II 6578 over a wider field than KPNO
   + And possibly deeper
   + But less systematic coverage
+* Creating the continuum-subtracted cubes
++ Most analysis is done in notebooks, but we might as well do this here
++ Copy the code over from muse-oii-permitted.org and the wav ranges from the NGC 346 project
+** wavsec1 - 5190 to 6260
+#+begin_src python :tangle ../scripts//subtract-continuum-wavsec1.py :eval no
+  import sys
+  import numpy as np
+  from astropy.io import fits
+  from astropy.wcs import WCS
+  from numpy.polynomial import Chebyshev as T
+  import itertools
+
+  try:
+      DATADIR = sys.argv[1]
+      SUFFIX = sys.argv[2]
+      OUTDIR = sys.argv[3]
+  except IndexError:
+      sys.exit(f"Usage: {sys.argv[0]} DATADIR SUFFIX OUTDIR")
+
+  infile = f"muse-hr-data-wavsec1{SUFFIX}.fits"
+  hdu = fits.open(f"{DATADIR}/{infile}")["DATA"]
+  w = WCS(hdu)
+  nwav, ny, nx = hdu.data.shape
+  wavpix = np.arange(nwav)
+
+  # Two pairs of adjacent sections for the true continuum
+
+  # Wavelength sections of clean continuum (lots of small sections)
+  clean_sections = [
+      [4610.0, 4616.0], [4624.0, 4627.0], # between C II, N II, O II
+      [4690.0, 4697.0], [4720.0, 4730.0], # between He I and Ar IV
+      [4746.0, 4750.0], [4760.0, 4765.0], # between Fe III lines
+      [4782.0, 4786.0], [4820.0, 4830.0], # next to Hb
+      [4910.0, 4916.0], [5060.0, 5080.0], # to the red
+      [5090.0, 5100.0], [5170.0, 5185.0], # to the red
+  ]
+
+  cont_slices = []
+  for wavs in clean_sections:
+      wavs = 1e-10*np.array(wavs)
+      _, _, wpix = w.world_to_pixel_values([0, 0], [0, 0], wavs)
+      cont_slices.append(slice(*wpix.astype(int)))
+
+
+  # Use median over each section to avoid weak lines
+  cont_maps = np.array([np.median(hdu.data[_, :, :], axis=0) for _ in cont_slices])
+  cont_wavpix = np.array([np.median(wavpix[_], axis=0) for _ in cont_slices])
+  # Inefficient but simple algorithm - loop over spaxels
+  bgdata = np.empty_like(hdu.data)
+  for j, i in itertools.product(range(ny), range(nx)):
+      # Fit polynomial to BG
+      try:
+          p = T.fit(cont_wavpix, cont_maps[:, j, i], deg=2)
+          # and fill in the BG spectrum of this spaxel
+          bgdata[:, j, i] = p(wavpix)
+      except:
+          bgdata[:, j, i] = np.nan
+
+
+
+  for suffix, cube in [
+          ["cont", bgdata],
+          ["cont-sub", hdu.data - bgdata],
+          # ["cont-div", hdu.data/bgdata],
+  ]:
+      outfile = infile.replace(".fits", f"-{suffix}.fits")
+      fits.PrimaryHDU(header=hdu.header, data=cube).writeto(
+          f"{OUTDIR}/{outfile}", overwrite=True)
+      print(f"Written {outfile}")
+#+end_src
+* Making some extra figures
++ Most will come from the notebooks.  But there are some that are easier to generate here. In particular if they are based on ones from other projects
++ General figures go in [[file:../figs/]]
++ Figures that will actually be used in the paper go in [[file:../paper/figs]]
+** RBG [O I] / [O II] / [O III] image
++ Do the same as I did for Fig 2b of the Raman paper
+  + but without the region boxes.
+  + Also, adjust the size a bit to match the C II figure
+  + and write as a PDF file.
+
+#+name: rgb-limits-oi-oii-oiii
+| linesum-O_I-6300-bin001.fits   |   8000 |   150000 |
+| linesum-O_II-7318-bin001.fits  |  20000 |  1000000 |
+| linesum-O_III-5007-bin001.fits | 200000 | 23000000 |
+
+#+name: star-coords
+| tet01 Ori A |  83.8159384 |  -5.3873146 |  50 |
+| tet01 Ori B | 83.81713333 | -5.38524722 |  30 |
+| tet01 Ori C | 83.81859898 | -5.38968015 | 100 |
+| tet01 Ori D | 83.82163535 | -5.38765726 |  50 |
+| tet02 Ori A | 83.84542605 | -5.41606033 | 100 |
+| tet02 Ori B | 83.86000176 | -5.41688682 |  70 |
+
+#+name: rgb-lupton-clean
+#+header: :var TAB=rgb-limits-oi-oii-oiii SUFFIX="oi-oii-oiii" DATADIR="../../dib-scatter-hii/data/orion-muse"
+#+header: :var STRETCH=0.3 Q=4 STARS=star-coords HDU="SCALED"
+#+begin_src python :results file :return figfile
+  import numpy as np
+  import matplotlib.pyplot as plt
+  from astropy.visualization import make_lupton_rgb
+  from astropy.io import fits
+  from astropy.wcs import WCS
+  import regions as rg
+  import seaborn as sns
+  sns.set_context("talk")
+
+  # Unpack the channel info from the table
+  [rf, r1, r2], [gf, g1, g2], [bf, b1, b2] = TAB
+
+  def load_and_scale_image(fn, v1, v2, ihdu=HDU):
+      data = fits.open(f"{DATADIR}/{fn}")[ihdu].data
+      return (data - v1) / (v2 - v1)
+
+
+  w = WCS(fits.open(f"{DATADIR}/{rf}")[HDU].header)
+
+  image_r = load_and_scale_image(rf, r1, r2)
+  image_g = load_and_scale_image(gf, g1, g2)
+  image_b = load_and_scale_image(bf, b1, b2)
+  image = make_lupton_rgb(image_r, image_g, image_b, stretch=STRETCH, Q=Q)
+
+  figfile = f"../figs/rgb-lupton-clean-{SUFFIX}.pdf"
+  fig, ax = plt.subplots(
+      figsize=(11, 9),
+      subplot_kw=dict(projection=w),
+  )
+  ax.imshow(image)
+  for _, ra, dec, size in STARS:
+      ax.scatter(ra, dec, transform=ax.get_transform("icrs"), s=0.6*size, ec="yellow", fc="none")
+  ax.set(xlabel="RA (J2000)", ylabel="Dec (J2000)")
+
+  fig.tight_layout(rect=[0.08, 0.07, 1.0, 1.0])
+  fig.savefig(figfile)
+#+end_src
+
+#+RESULTS: rgb-lupton-clean
+[[file:../figs/rgb-lupton-clean-oi-oii-oiii.pdf]]
+
+#+name: cii-723x-ratio
+#+header: :var STARS=star-coords
+#+begin_src python :results file :return figfile
+  import numpy as np
+  import matplotlib.pyplot as plt
+  from astropy.visualization import make_lupton_rgb
+  from astropy.io import fits
+  from astropy.wcs import WCS
+  import regions as rg
+  import seaborn as sns
+  sns.set_context("talk")
+
+  hdu_ratio = fits.open("../data/orig-muse/ratio-723X-6563-multibin.fits")[0]
+  w = WCS(hdu_ratio.header)
+
+  figfile = f"../figs/ratio-cii723x-ha-multibin.pdf"
+
+  fig, ax = plt.subplots(
+      figsize=(11, 9),
+      subplot_kw=dict(projection=w),
+  )
+  im = ax.imshow(
+      hdu_ratio.data,
+      vmin=0.0, vmax=0.004,
+      cmap="gray",
+  )
+  for _, ra, dec, size in STARS:
+      ax.scatter(ra, dec, transform=ax.get_transform("icrs"), s=0.6*size, ec="black", fc="yellow")
+
+  ax.set(xlabel="RA (J2000)", ylabel="Dec (J2000)")
+  ax.set_title(
+      "(C II λλ7231 + 7236) / Hα λ6563", 
+      pad=12,
+      y=0.0,
+      fontweight="bold",
+      color="w",
+  )
+  fig.tight_layout(rect=[0.08, 0.07, 1.0, 1.0])
+  fig.savefig(figfile)
+#+end_src
+
+#+RESULTS: cii-723x-ratio
+[[file:../figs/ratio-cii723x-ha-multibin.pdf]]
+
 
 * Previous notes from other projects
 These are just copied verbatim here.
