@@ -544,4 +544,547 @@ pass;
 #
 # Bear in mind though that a lot of the positive structure is more driven by holes in the [O III] than by excess of C II. Also, the extinction must be affecting things too.
 
+# # Look at selected parts of the oiii cube
+
+# Now we will use the resampled cubes that we have already calculated WCS and BG subtraction for from the Luis project:
+
+LUIS_DATA_PATH = Path.home() / "Dropbox" / "LuisBowshocks" / "kinematics"
+
+o3cube_hdu = fits.open(LUIS_DATA_PATH / "vcube.oiii-wcs-csub.fits")[0]
+
+# Write out a version that is normalised to give the fraction of the integrated emission in each channel. 
+
+fits.PrimaryHDU(
+    header=o3cube_hdu.header,
+    data=o3cube_hdu.data / np.sum(o3cube_hdu.data, axis=0)
+).writeto(
+    LUIS_DATA_PATH / "vcube.oiii-wcs-csub-frac.fits",
+    overwrite=True,
+)
+
+# Save selected pairs of channels that trace the Trapezium shell and the Big Arc
+#
+# First the Trapezium shell: 
+
+o3_Vp32 = np.sum(o3cube_hdu.data[34 - 1:36 + 1, ...], axis=0)
+o3_Vp24 = np.sum(o3cube_hdu.data[32 - 1:34 + 1, ...], axis=0)
+o3_Vp16 = np.sum(o3cube_hdu.data[30 - 1:32 + 1, ...], axis=0)
+
+nv, ny, nx = o3cube_hdu.data.shape
+rgbim = np.empty((ny, nx, 3), dtype=float)
+norm = 0.14
+rgbim[..., 0] = norm * o3_Vp32 / np.median(o3_Vp32)
+rgbim[..., 1] = norm * o3_Vp24 / np.median(o3_Vp24)
+rgbim[..., 2] = norm * o3_Vp16 / np.median(o3_Vp16)
+
+# + [markdown] tags=[]
+# Now the Big Arc:
+
+# + tags=[]
+o3_Vp08 = np.sum(o3cube_hdu.data[28 - 1:30 + 1, ...], axis=0)
+o3_Vp00 = np.sum(o3cube_hdu.data[26 - 1:28 + 1, ...], axis=0)
+o3_Vn08 = np.sum(o3cube_hdu.data[24 - 1:26 + 1, ...], axis=0)
+# -
+
+rgbim2 = np.empty((ny, nx, 3), dtype=float)
+norm2 = 0.14
+rgbim2[..., 0] = norm2 * o3_Vp08 / np.median(o3_Vp08)
+rgbim2[..., 1] = norm2 * o3_Vp00 / np.median(o3_Vp00)
+rgbim2[..., 2] = norm2 * o3_Vn08 / np.median(o3_Vn08)
+
+# Plot them both together:
+
+fig, axes = plt.subplots(
+    1, 2, 
+    figsize=(12, 10),
+    subplot_kw=dict(projection=WCS(o3cube_hdu.header).celestial),
+    sharex=True,
+    sharey=True,
+)
+axes[0].imshow(rgbim)
+axes[1].imshow(rgbim2)
+axes[1].coords[1].set_ticklabel_visible(False)
+axes[1].coords[1].set_axislabel("")
+...;
+
+# +
+o3_Vp80 = np.sum(o3cube_hdu.data[46 - 1:48 + 1, ...], axis=0)
+o3_Vp72 = np.sum(o3cube_hdu.data[44 - 1:46 + 1, ...], axis=0)
+o3_Vp64 = np.sum(o3cube_hdu.data[42 - 1:44 + 1, ...], axis=0)
+
+o3_Vp56 = np.sum(o3cube_hdu.data[40 - 1:42 + 1, ...], axis=0)
+o3_Vp48 = np.sum(o3cube_hdu.data[38 - 1:40 + 1, ...], axis=0)
+o3_Vp40 = np.sum(o3cube_hdu.data[36 - 1:38 + 1, ...], axis=0)
+
+o3_Vn16 = np.sum(o3cube_hdu.data[22 - 1:24 + 1, ...], axis=0)
+o3_Vn24 = np.sum(o3cube_hdu.data[20 - 1:22 + 1, ...], axis=0)
+o3_Vn32 = np.sum(o3cube_hdu.data[18 - 1:20 + 1, ...], axis=0)
+
+o3_Vn40 = np.sum(o3cube_hdu.data[16 - 1:18 + 1, ...], axis=0)
+o3_Vn48 = np.sum(o3cube_hdu.data[14 - 1:16 + 1, ...], axis=0)
+o3_Vn56 = np.sum(o3cube_hdu.data[12 - 1:24 + 1, ...], axis=0)
+
+o3_Vn64 = np.sum(o3cube_hdu.data[10 - 1:12 + 1, ...], axis=0)
+o3_Vn72 = np.sum(o3cube_hdu.data[8 - 1:10 + 1, ...], axis=0)
+o3_Vn80 = np.sum(o3cube_hdu.data[6 - 1:8 + 1, ...], axis=0)
+
+
+
+rgbim7 = np.empty((ny, nx, 3), dtype=float)
+norm7 = 0.16
+rgbim7[..., 0] = norm7 * o3_Vp80 / np.median(o3_Vp80)
+rgbim7[..., 1] = norm7 * o3_Vp72 / np.median(o3_Vp72)
+rgbim7[..., 2] = norm7 * o3_Vp64 / np.median(o3_Vp64)
+rgbim3 = np.empty((ny, nx, 3), dtype=float)
+norm3 = 0.16
+rgbim3[..., 0] = norm3 * o3_Vp56 / np.median(o3_Vp56)
+rgbim3[..., 1] = norm3 * o3_Vp48 / np.median(o3_Vp48)
+rgbim3[..., 2] = norm3 * o3_Vp40 / np.median(o3_Vp40)
+rgbim4 = np.empty((ny, nx, 3), dtype=float)
+norm4 = 0.1
+rgbim4[..., 0] = norm4 * o3_Vn16 / np.median(o3_Vn16)
+rgbim4[..., 1] = norm4 * o3_Vn24 / np.median(o3_Vn24)
+rgbim4[..., 2] = norm4 * o3_Vn32 / np.median(o3_Vn32)
+rgbim5 = np.empty((ny, nx, 3), dtype=float)
+norm5 = 0.05
+rgbim5[..., 0] = norm5 * o3_Vn40 / np.median(o3_Vn40)
+rgbim5[..., 1] = norm5 * o3_Vn48 / np.median(o3_Vn48)
+rgbim5[..., 2] = norm5 * o3_Vn56 / np.median(o3_Vn56)
+rgbim6 = np.empty((ny, nx, 3), dtype=float)
+norm6 = 0.05
+rgbim6[..., 0] = norm6 * o3_Vn64 / np.median(o3_Vn64)
+rgbim6[..., 1] = norm6 * o3_Vn72 / np.median(o3_Vn72)
+rgbim6[..., 2] = norm6 * o3_Vn80 / np.median(o3_Vn80)
+# -
+
+fig, axes = plt.subplots(
+    1, 2, 
+    figsize=(12, 10),
+    subplot_kw=dict(projection=WCS(o3cube_hdu.header).celestial),
+    sharex=True,
+    sharey=True,
+)
+axes[0].imshow(rgbim3)
+axes[1].imshow(rgbim4)
+axes[1].coords[1].set_ticklabel_visible(False)
+axes[1].coords[1].set_axislabel("")
+...;
+
+fig, axes = plt.subplots(
+    1, 2, 
+    figsize=(12, 10),
+    subplot_kw=dict(projection=WCS(o3cube_hdu.header).celestial),
+    sharex=True,
+    sharey=True,
+)
+axes[0].imshow(rgbim3)
+axes[1].imshow(rgbim7)
+axes[1].coords[1].set_ticklabel_visible(False)
+axes[1].coords[1].set_axislabel("")
+...;
+
+fig, axes = plt.subplots(
+    1, 2, 
+    figsize=(12, 10),
+    subplot_kw=dict(projection=WCS(o3cube_hdu.header).celestial),
+    sharex=True,
+    sharey=True,
+)
+axes[0].imshow(rgbim5)
+axes[1].imshow(rgbim6)
+axes[1].coords[1].set_ticklabel_visible(False)
+axes[1].coords[1].set_axislabel("")
+...;
+
+fig, axes = plt.subplots(
+    2, 3, 
+    figsize=(12, 11),
+    subplot_kw=dict(projection=WCS(o3cube_hdu.header).celestial),
+    sharex=True,
+    sharey=True,
+)
+axes[0, 0].imshow(rgbim3)
+axes[0, 1].imshow(rgbim)
+axes[0, 2].imshow(rgbim2)
+axes[1, 0].imshow(rgbim4)
+axes[1, 1].imshow(rgbim5)
+axes[1, 2].imshow(rgbim6)
+for ax in axes[:, 1:].flat:
+    ax.coords[1].set_ticklabel_visible(False)
+    ax.coords[1].set_axislabel("")
+for ax in axes[0, :].flat:
+    ax.coords[0].set_ticklabel_visible(False)
+    ax.coords[0].set_axislabel("")
+fig.tight_layout()
+...;
+
+# These nicely show the Trapezium shell, which has a smoothish appearance on the red side (e.g., red-green transition in the upper middle pane). But is much more fragmented on blue side. See bottom panels. 
+
+from astropy.coordinates import SkyCoord
+import astropy.units as u
+
+# Coordinates of th1C
+
+c0 = SkyCoord(ra=83.81859898, dec=-5.38968015, unit=u.deg)
+
+# Radius of each pixel from th1C
+
+wcube = WCS(o3cube_hdu.header).celestial
+ii, jj = np.meshgrid(range(nx), range(ny))
+c = wcube.array_index_to_world(jj, ii)
+rad = c.separation(c0).arcsec
+rad.min(), rad.mean(), rad.max()
+
+wspec = WCS(o3cube_hdu.header).spectral
+vels = wspec.array_index_to_world(range(nv)).value
+vels
+
+# We need to mask out th2A since its continuum dominates some of the farther out velocity channels.
+
+c0_2A = SkyCoord(ra= 83.84542605, dec=-5.41606033, unit=u.deg)
+rad2A = c.separation(c0_2A).arcsec
+m2A = rad2A < 3.0
+
+# Make a histogram of velocity profile versus radius:
+
+hists = []
+edges = []
+for plane in o3cube_hdu.data:
+    mgood = ~m2A
+    #mgood[:, 170:190] = False
+    #mgood[:, 220:240] = False
+    mgood = mgood & np.isfinite(plane)
+    mgood = mgood & (plane > 0.0)
+    #mgood = mgood & (plane < 300 * np.nanmean(plane))
+    H, e = np.histogram(
+        rad[mgood], 
+        weights=plane[mgood] / rad[mgood], 
+        density=False,
+        bins=np.linspace(0.0, 180.0, 200),
+    )
+    hists.append(
+        H #/ np.nanmax(H)
+    )
+hist_arr = np.stack(hists)
+hist_arr /= np.nanmedian(hist_arr)
+#hist_arr -= np.median(hist_arr[:, :10], axis=1, keepdims=True)
+
+fig, ax = plt.subplots(figsize=(12,8))
+gamma = 6.0
+ax.imshow(
+    hist_arr**(1/gamma), 
+    origin="lower",
+    extent=[e[0], e[-1], vels[0], vels[-1]],
+    vmin=0, vmax=None,
+    cmap="inferno",
+)
+ax.set_aspect(0.8)
+ax.set(
+    ylim=[-90, 130],
+    xlabel="Radius (arcsec) from θ$^1$ C",
+    ylabel="Heliocentric velocity (km/s)",
+)
+...;
+
+# Now try against log radius to accentuate the Trapezium shell:
+
+# +
+hists = []
+edges = []
+for plane in o3cube_hdu.data:
+    mgood = ~m2A
+    #mgood[:, 170:190] = False
+    #mgood[:, 220:240] = False
+    mgood = mgood & np.isfinite(plane)
+    mgood = mgood & (plane > 0.0)
+    #mgood = mgood & (plane < 300 * np.nanmean(plane))
+    H, e = np.histogram(
+        np.log10(rad[mgood]), 
+        weights=plane[mgood] / rad[mgood]**2, 
+        density=False,
+        bins=np.linspace(0.4, 2.4, 50),
+    )
+    hists.append(
+        H #/ np.nanmax(H)
+    )
+hist_arr = np.stack(hists)
+hist_arr /= np.nanmedian(hist_arr)
+
+vslice = slice(25, 38)
+mom0 = np.sum(hist_arr[vslice, :], axis=0)
+mom1 = np.sum(hist_arr[vslice, :] * vels[vslice, None], axis=0)
+vmeans = mom1 / mom0
+
+fig, ax = plt.subplots(figsize=(12,8))
+gamma = 6.0
+ax.imshow(
+    hist_arr**(1/gamma), 
+    origin="lower",
+    extent=[e[0], e[-1], vels[0], vels[-1]],
+    vmin=0, vmax=None,
+    cmap="inferno",
+)
+centers = 0.5 * (e[1:] + e[:-1])
+ax.contour(
+    centers,
+    vels,
+    hist_arr / hist_arr.max(), 
+    levels=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+    colors="k",
+)
+ax.plot(centers, vmeans, color="c", lw=3)
+
+ax.set_aspect(0.02)
+ax.set(
+    ylim=[-75, 80],
+    xlabel="log$_{10}$ Radius (arcsec) from θ$^1$ C",
+    ylabel="Heliocentric velocity (km/s)"
+)
+...;
+
+# +
+hists = []
+edges = []
+hvmap = o3cube_hdu.data[:22, ...].sum(axis=0)
+hvmask = hvmap >= 15.0 * np.median(hvmap)
+hvrmap = o3cube_hdu.data[42:50, ...].sum(axis=0)
+hvmask = hvmask | (hvrmap >= 15.0 * np.median(hvrmap))
+
+
+for plane in o3cube_hdu.data:
+    mgood = (~m2A) & (~hvmask)
+    #mgood[:, 170:190] = False
+    #mgood[:, 220:240] = False
+    mgood = mgood & np.isfinite(plane)
+    mgood = mgood & (plane > 0.0)
+    #mgood = mgood & (plane < 300 * np.nanmean(plane))
+    H, e = np.histogram(
+        np.log10(rad[mgood]), 
+        weights=plane[mgood] / rad[mgood]**2, 
+        density=False,
+        bins=np.linspace(0.4, 2.4, 50),
+    )
+    hists.append(
+        H #/ np.nanmax(H)
+    )
+hist_arr = np.stack(hists)
+hist_arr /= np.nanmedian(hist_arr)
+
+vslice = slice(25, 38)
+mom0 = np.sum(hist_arr[vslice, :], axis=0)
+mom1 = np.sum(hist_arr[vslice, :] * vels[vslice, None], axis=0)
+vmeans = mom1 / mom0
+
+
+fig, ax = plt.subplots(figsize=(12,8))
+gamma = 6.0
+ax.imshow(
+    hist_arr**(1/gamma), 
+    origin="lower",
+    extent=[e[0], e[-1], vels[0], vels[-1]],
+    vmin=0, vmax=None,
+    cmap="inferno",
+)
+centers = 0.5 * (e[1:] + e[:-1])
+ax.contour(
+    centers,
+    vels,
+    hist_arr / hist_arr.max(), 
+    levels=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+    colors="k",
+)
+ax.plot(centers, vmeans, color="c", lw=3)
+
+ax.set_aspect(0.02)
+ax.set(
+    ylim=[-20, 70],
+    xlabel="log$_{10}$ Radius (arcsec) from θ$^1$ C",
+    ylabel="Heliocentric velocity (km/s)"
+)
+...;
+# -
+
+# Here is what we are masking out:
+
+fig, ax = plt.subplots( 
+    figsize=(8, 10),
+    subplot_kw=dict(projection=WCS(o3cube_hdu.header).celestial),
+    sharex=True,
+    sharey=True,
+)
+ax.imshow(hvmask)
+...;
+
+# Then try again with linear scale and normalize so that total line is equal at each radius
+
+# +
+hists = []
+edges = []
+for plane in o3cube_hdu.data:
+    mgood = (~m2A) & (~hvmask)
+    #mgood[:, 170:190] = False
+    #mgood[:, 220:240] = False
+    mgood = mgood & np.isfinite(plane)
+    mgood = mgood & (plane > 0.0)
+    #mgood = mgood & (plane < 300 * np.nanmean(plane))
+    H, e = np.histogram(
+        rad[mgood], 
+        weights=plane[mgood] / rad[mgood], 
+        density=False,
+        bins=np.linspace(0.0, 140.0, 200),
+    )
+    hists.append(
+        H #/ np.nanmax(H)
+    )
+hist_arr = np.stack(hists)
+hist_arr /= np.nanmedian(hist_arr)
+
+hist_arr /= np.mean(hist_arr, axis=0, keepdims=True)
+
+vslice = slice(25, 38)
+mom0 = np.sum(hist_arr[vslice, :], axis=0)
+mom1 = np.sum(hist_arr[vslice, :] * vels[vslice, None], axis=0)
+vmeans = mom1 / mom0
+
+
+
+fig, ax = plt.subplots(figsize=(12,8))
+gamma = 6.0
+ax.imshow(
+    hist_arr**(1/gamma), 
+    origin="lower",
+    extent=[e[0], e[-1], vels[0], vels[-1]],
+    vmin=0, vmax=None,
+    cmap="inferno",
+)
+centers = 0.5 * (e[1:] + e[:-1])
+levels = [0.025, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+ax.contour(
+    centers,
+    vels,
+    hist_arr / hist_arr.max(), 
+    levels=levels,
+    colors="k",
+    linewidths=0.5 + 0.1*np.arange(len(levels)),
+)
+#ax.plot(centers, vmeans, color="c", lw=3)
+ax.set_aspect(1.)
+ax.set(
+    ylim=[-20, 70],
+    xlabel="Radius (arcsec) from θ$^1$ C",
+    ylabel="Heliocentric velocity (km/s)",
+)
+...;
+# -
+
+pa = c0.position_angle(c)
+msouth = (np.cos(pa) < 0.0)
+
+# +
+hists = []
+edges = []
+for plane in o3cube_hdu.data:
+#    mgood = (~m2A) & (~hvmask) & msouth
+    mgood = (~m2A) & msouth
+    mgood = mgood & np.isfinite(plane)
+    mgood = mgood & (plane > 0.0)
+    H, e = np.histogram(
+        rad[mgood], 
+        weights=plane[mgood] / rad[mgood], 
+        density=False,
+        bins=np.linspace(0.0, 160.0, 200),
+    )
+    hists.append(
+        H #/ np.nanmax(H)
+    )
+hist_arr = np.stack(hists)
+hist_arr /= np.nanmedian(hist_arr)
+
+hist_arr /= np.mean(hist_arr, axis=0, keepdims=True)
+
+
+
+fig, ax = plt.subplots(figsize=(12,8))
+gamma = 6.0
+ax.imshow(
+    hist_arr**(1/gamma), 
+    origin="lower",
+    extent=[e[0], e[-1], vels[0], vels[-1]],
+    vmin=0, vmax=None,
+    cmap="inferno",
+)
+centers = 0.5 * (e[1:] + e[:-1])
+levels = [0.025, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+ax.contour(
+    centers,
+    vels,
+    hist_arr / hist_arr.max(), 
+    levels=levels,
+    colors="k",
+    linewidths=0.5 + 0.1*np.arange(len(levels)),
+)
+#ax.plot(centers, vmeans, color="c", lw=3)
+ax.set_aspect(1.)
+ax.set(
+    ylim=[-75, 75],
+    xlabel="Radius (arcsec) from θ$^1$ C",
+    ylabel="Heliocentric velocity (km/s)",
+    title="Northern half",
+)
+...;
+
+# +
+hists = []
+edges = []
+for plane in o3cube_hdu.data:
+#    mgood = (~m2A) & (~hvmask) & (~msouth)
+    mgood = (~m2A) & (~msouth)
+    mgood = mgood & np.isfinite(plane)
+    mgood = mgood & (plane > 0.0)
+    H, e = np.histogram(
+        rad[mgood], 
+        weights=plane[mgood] / rad[mgood], 
+        density=False,
+        bins=np.linspace(0.0, 140.0, 200),
+    )
+    hists.append(
+        H #/ np.nanmax(H)
+    )
+hist_arr = np.stack(hists)
+hist_arr /= np.nanmedian(hist_arr)
+
+hist_arr /= np.mean(hist_arr, axis=0, keepdims=True)
+
+
+
+fig, ax = plt.subplots(figsize=(12,8))
+gamma = 6.0
+ax.imshow(
+    hist_arr**(1/gamma), 
+    origin="lower",
+    extent=[e[0], e[-1], vels[0], vels[-1]],
+    vmin=0, vmax=None,
+    cmap="inferno",
+)
+centers = 0.5 * (e[1:] + e[:-1])
+levels = [0.025, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+ax.contour(
+    centers,
+    vels,
+    hist_arr / hist_arr.max(), 
+    levels=levels,
+    colors="k",
+    linewidths=0.5 + 0.1*np.arange(len(levels)),
+)
+#ax.plot(centers, vmeans, color="c", lw=3)
+ax.set_aspect(1.)
+ax.set(
+    ylim=[-75, 75],
+    xlabel="Radius (arcsec) from θ$^1$ C",
+    ylabel="Heliocentric velocity (km/s)",
+    title="Southern half",
+)
+...;
+# -
+
 
