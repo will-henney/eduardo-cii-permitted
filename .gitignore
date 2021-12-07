@@ -9,3 +9,4 @@
 /paper/cii-orion.pdf
 *.synctex.gz
 data/orig-muse
+notebooks/.ipynb_checkpoints

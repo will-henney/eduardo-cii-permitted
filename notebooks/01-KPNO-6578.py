@@ -696,44 +696,75 @@ axes[1].coords[1].set_ticklabel_visible(False)
 axes[1].coords[1].set_axislabel("")
 ...;
 
+# + tags=[]
+from astropy.coordinates import SkyCoord
+import astropy.units as u
+
+# + [markdown] tags=[]
+# Coordinates of th1C
+
+# + tags=[]
+c0 = SkyCoord(ra=83.81859898, dec=-5.38968015, unit=u.deg)
+
+# + tags=[]
 fig, axes = plt.subplots(
     2, 3, 
-    figsize=(12, 11),
+    figsize=(12, 11.1),
     subplot_kw=dict(projection=WCS(o3cube_hdu.header).celestial),
     sharex=True,
     sharey=True,
+    constrained_layout=False,
 )
 axes[0, 0].imshow(rgbim3)
+axes[0, 0].set_title("$+48$", y=0, color="w")
 axes[0, 1].imshow(rgbim)
+axes[0, 1].set_title("$+24$", y=0, color="w")
 axes[0, 2].imshow(rgbim2)
+axes[0, 2].set_title("$+0$", y=0, color="w")
 axes[1, 0].imshow(rgbim4)
+axes[1, 0].set_title("$-24$", y=0, color="w")
 axes[1, 1].imshow(rgbim5)
+axes[1, 1].set_title("$-48$", y=0, color="w")
 axes[1, 2].imshow(rgbim6)
+axes[1, 2].set_title("$-72$", y=0, color="w")
 for ax in axes[:, 1:].flat:
     ax.coords[1].set_ticklabel_visible(False)
     ax.coords[1].set_axislabel("")
 for ax in axes[0, :].flat:
     ax.coords[0].set_ticklabel_visible(False)
     ax.coords[0].set_axislabel("")
-fig.tight_layout()
+for ax in axes.flat:
+    ax.scatter(
+        c0.ra.deg, c0.dec.deg, 
+        transform=ax.get_transform("icrs"), 
+        s=100, 
+        ec="yellow", 
+        fc="none",
+    )
+fig.canvas.draw()
+fig.tight_layout(h_pad=0.2, w_pad=0.1)
+#fig.tight_layout(
+#    pad=8.0,  h_pad=0, w_pad=0, 
+#    rect=[0.0, 1.2, 0.0, 1.2],
+#)
+#fig.set_constrained_layout_pads(w_pad=1, h_pad=1)
+fig.savefig("../figs/multi-isovel-oiii.pdf")
 ...;
+# -
+
+fig.set
 
 # These nicely show the Trapezium shell, which has a smoothish appearance on the red side (e.g., red-green transition in the upper middle pane). But is much more fragmented on blue side. See bottom panels. 
 
-from astropy.coordinates import SkyCoord
-import astropy.units as u
-
-# Coordinates of th1C
-
-c0 = SkyCoord(ra=83.81859898, dec=-5.38968015, unit=u.deg)
-
 # Radius of each pixel from th1C
 
+# + jupyter={"source_hidden": true} tags=[]
 wcube = WCS(o3cube_hdu.header).celestial
 ii, jj = np.meshgrid(range(nx), range(ny))
 c = wcube.array_index_to_world(jj, ii)
 rad = c.separation(c0).arcsec
 rad.min(), rad.mean(), rad.max()
+# -
 
 wspec = WCS(o3cube_hdu.header).spectral
 vels = wspec.array_index_to_world(range(nv)).value
@@ -929,17 +960,18 @@ for plane in o3cube_hdu.data:
     #mgood = mgood & (plane < 300 * np.nanmean(plane))
     H, e = np.histogram(
         rad[mgood], 
-        weights=plane[mgood] / rad[mgood], 
-        density=False,
+        weights=plane[mgood],
+        bins=np.linspace(0.0, 140.0, 200),
+    )
+    H0, _ = np.histogram(
+        rad[mgood], 
         bins=np.linspace(0.0, 140.0, 200),
     )
     hists.append(
-        H #/ np.nanmax(H)
+        H / H0,
     )
 hist_arr = np.stack(hists)
-hist_arr /= np.nanmedian(hist_arr)
-
-hist_arr /= np.mean(hist_arr, axis=0, keepdims=True)
+hist_arr /= np.nanmax(hist_arr)
 
 vslice = slice(25, 38)
 mom0 = np.sum(hist_arr[vslice, :], axis=0)
@@ -951,10 +983,10 @@ vmeans = mom1 / mom0
 fig, ax = plt.subplots(figsize=(12,8))
 gamma = 6.0
 ax.imshow(
-    hist_arr**(1/gamma), 
+    300 * hist_arr, 
     origin="lower",
     extent=[e[0], e[-1], vels[0], vels[-1]],
-    vmin=0, vmax=None,
+    vmin=0, vmax=1.0,
     cmap="inferno",
 )
 centers = 0.5 * (e[1:] + e[:-1])
@@ -962,7 +994,7 @@ levels = [0.025, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 ax.contour(
     centers,
     vels,
-    hist_arr / hist_arr.max(), 
+    hist_arr, 
     levels=levels,
     colors="k",
     linewidths=0.5 + 0.1*np.arange(len(levels)),
@@ -970,121 +1002,365 @@ ax.contour(
 #ax.plot(centers, vmeans, color="c", lw=3)
 ax.set_aspect(1.)
 ax.set(
-    ylim=[-20, 70],
+    ylim=[-100, 50],
     xlabel="Radius (arcsec) from θ$^1$ C",
     ylabel="Heliocentric velocity (km/s)",
 )
 ...;
 # -
+
+# ## Look at CO velocity for point of reference
+#
+#
+
+CO_PATH = Path.home() / "Dropbox/OrionMolecular/Carma-NRO-CO/dataverse_files"
+mom1_13co_hdu = fits.open(CO_PATH / "mom1_12co_pix_2_Tmb.fits")[0]
+w_13co = WCS(mom1_13co_hdu.header).celestial
+vel_13co = mom1_13co_hdu.data[0, :, :]
+
+ny, nx = vel_13co.shape
+ii, jj = np.meshgrid(range(nx), range(ny))
+c_co = w_13co.array_index_to_world(jj, ii)
+rad_co = c_co.separation(c0).arcsec
+rad_co.min(), rad_co.mean(), rad_co.max()
+
+w_13co
+
+pa = c0.position_angle(c_co)
+mNE = pa < 90 * u.deg
+mSE = (pa >= 90 * u.deg) & (pa < 180 * u.deg)
+mSW = (pa >= 180 * u.deg) & (pa < 270 * u.deg)
+mNW = pa >= 270 * u.deg
+
+quadmasks_co = {"NE": mNE, "NW": mNW, "SE": mSE, "SW": mSW}
+radbins_co = np.linspace(0.0, 170.0, 86)
+
+Vco_dict = {}
+for qlabel, qmask in quadmasks_co.items():
+    mgood = qmask
+    mgood = mgood & np.isfinite(vel_13co)
+
+    H, e = np.histogram(
+        rad_co[mgood], 
+        weights=vel_13co[mgood], 
+        bins=radbins_co,
+    )
+    H0, _ = np.histogram(
+        rad_co[mgood], 
+        bins=radbins_co,
+    )
+    Vco_dict[qlabel] = 18.1 + H / H0
+
+centers_co = 0.5 * (radbins_co[1:] + radbins_co[:-1])
+
+fig, ax = plt.subplots()
+for qlabel, V in Vco_dict.items():
+    ax.plot(centers_co, V, label=qlabel)
+ax.legend()
+...;
+
+
+
+# ## Final version with quadrants
+
+# Use the position angle to divide by quadrant
 
 pa = c0.position_angle(c)
-msouth = (np.cos(pa) < 0.0)
+mNE = pa < 90 * u.deg
+mSE = (pa >= 90 * u.deg) & (pa < 180 * u.deg)
+mSW = (pa >= 180 * u.deg) & (pa < 270 * u.deg)
+mNW = pa >= 270 * u.deg
+assert np.alltrue(mNE | mSE | mSW | mNW)
+quadmasks = {"NE": mNE, "NW": mNW, "SE": mSE, "SW": mSW}
+
+# We will regrid in velocity onto a finer 1 km/s spacing, using linear interpolation.  And then convolve with a Gaussian to smooth out the sharp corners to make the contours look better.
+
+from astropy.convolution import Gaussian2DKernel, convolve
+kernel = Gaussian2DKernel(x_stddev=0.75)
+hist_arr_dict = {}
+# Grid with 1 km/s spacing
+finevels = np.arange(vels[0], vels[-1], 1.0)
+nfv = len(finevels)
+radbins = np.linspace(0.0, 169.0, 170)
+nr = len(radbins) - 1
+
+# Now I have settled on the "correct" way to do the histogram. I calculate a histogram of radii `H`, which is weighted by the isovel map. Then calculate another histogram of radii `H0` with uniform weights. Then I take the ratio: `H / H0`, which automatically accounts for the border effects as well as the 1/r factor. 
 
 # +
-hists = []
-edges = []
-for plane in o3cube_hdu.data:
-#    mgood = (~m2A) & (~hvmask) & msouth
-    mgood = (~m2A) & msouth
-    mgood = mgood & np.isfinite(plane)
-    mgood = mgood & (plane > 0.0)
-    H, e = np.histogram(
-        rad[mgood], 
-        weights=plane[mgood] / rad[mgood], 
-        density=False,
-        bins=np.linspace(0.0, 160.0, 200),
-    )
-    hists.append(
-        H #/ np.nanmax(H)
-    )
-hist_arr = np.stack(hists)
-hist_arr /= np.nanmedian(hist_arr)
+for qlabel, qmask in quadmasks.items():
+    hists = []
+    edges = []
+    for plane in o3cube_hdu.data:
+        mgood = (~m2A) & qmask
+        mgood = mgood & np.isfinite(plane)
+        mgood = mgood & (plane > 0.0)
+        H, e = np.histogram(
+            rad[mgood], 
+            weights=plane[mgood], 
+            bins=radbins,
+        )
+        H0, _ = np.histogram(
+            rad[mgood], 
+            bins=radbins,
+        )
+        hists.append(
+            H / H0#/ np.nanmax(H)
+        )
+    hist_arr = np.stack(hists)
+    hist_arr /= np.nanmax(hist_arr)
+    hist_fine = np.empty((nfv, nr))
+    print(hist_arr.shape, hist_fine.shape)
 
-hist_arr /= np.mean(hist_arr, axis=0, keepdims=True)
+    for ir in range(nr):
+        hist_fine[:, ir] = np.interp(finevels, vels, hist_arr[:, ir])
+    #hist_arr /= np.nanmean(hist_arr, axis=0, keepdims=True)
+    hist_arr_dict[qlabel] = convolve(hist_fine, kernel)
 
 
-
-fig, ax = plt.subplots(figsize=(12,8))
 gamma = 6.0
-ax.imshow(
-    hist_arr**(1/gamma), 
-    origin="lower",
-    extent=[e[0], e[-1], vels[0], vels[-1]],
-    vmin=0, vmax=None,
-    cmap="inferno",
-)
-centers = 0.5 * (e[1:] + e[:-1])
-levels = [0.025, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-ax.contour(
-    centers,
-    vels,
-    hist_arr / hist_arr.max(), 
-    levels=levels,
-    colors="k",
-    linewidths=0.5 + 0.1*np.arange(len(levels)),
-)
-#ax.plot(centers, vmeans, color="c", lw=3)
-ax.set_aspect(1.)
-ax.set(
-    ylim=[-75, 75],
-    xlabel="Radius (arcsec) from θ$^1$ C",
-    ylabel="Heliocentric velocity (km/s)",
-    title="Northern half",
-)
-...;
+centers = 0.5 * (radbins[1:] + radbins[:-1])
+levels_hi = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+levels_lo = 0.1 * np.array([1 / 64, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2])
 
-# +
-hists = []
-edges = []
-for plane in o3cube_hdu.data:
-#    mgood = (~m2A) & (~hvmask) & (~msouth)
-    mgood = (~m2A) & (~msouth)
-    mgood = mgood & np.isfinite(plane)
-    mgood = mgood & (plane > 0.0)
-    H, e = np.histogram(
-        rad[mgood], 
-        weights=plane[mgood] / rad[mgood], 
-        density=False,
-        bins=np.linspace(0.0, 140.0, 200),
+fig, axes = plt.subplots(
+    2, 2, 
+    figsize=(12, 10),
+    sharex=True,
+    sharey=True,
+)
+for qlabel, ax in zip(hist_arr_dict, axes.flat):
+    hist_arr = hist_arr_dict[qlabel]
+    hist_arr[~np.isfinite(hist_arr)] = 0.0
+    print(qlabel, np.nanmax(hist_arr))
+    ax.imshow(
+        hist_arr**(1/gamma), 
+        origin="lower",
+        extent=[radbins[0], radbins[-1], vels[0], vels[-1]],
+        vmin=0, vmax=1.0,
+        cmap="inferno",
     )
-    hists.append(
-        H #/ np.nanmax(H)
+    ax.contour(
+        centers,
+        finevels,
+        hist_arr, 
+        levels=levels_hi,
+        colors="k",
+        linewidths=0.5 + 0.1*np.arange(len(levels_hi)),
     )
-hist_arr = np.stack(hists)
-hist_arr /= np.nanmedian(hist_arr)
+    ax.contour(
+        centers,
+        finevels,
+        hist_arr, 
+        levels=levels_lo,
+        colors="w",
+        linewidths=0.5,
+    )
+    ax.plot(
+        centers_co, 
+        Vco_dict[qlabel], 
+        lw=3, color="k", linestyle="dashed",
+    )
+    #ax.plot(centers, vmeans, color="c", lw=3)
+    ax.set_aspect(1.)
+    ax.set(
+        ylim=[-75, 75],
+    )
+    ax.set_title(f"{qlabel} quadrant", y=0, pad=20, color="w")
 
-hist_arr /= np.mean(hist_arr, axis=0, keepdims=True)
-
-
-
-fig, ax = plt.subplots(figsize=(12,8))
-gamma = 6.0
-ax.imshow(
-    hist_arr**(1/gamma), 
-    origin="lower",
-    extent=[e[0], e[-1], vels[0], vels[-1]],
-    vmin=0, vmax=None,
-    cmap="inferno",
-)
-centers = 0.5 * (e[1:] + e[:-1])
-levels = [0.025, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-ax.contour(
-    centers,
-    vels,
-    hist_arr / hist_arr.max(), 
-    levels=levels,
-    colors="k",
-    linewidths=0.5 + 0.1*np.arange(len(levels)),
-)
-#ax.plot(centers, vmeans, color="c", lw=3)
-ax.set_aspect(1.)
-ax.set(
-    ylim=[-75, 75],
-    xlabel="Radius (arcsec) from θ$^1$ C",
-    ylabel="Heliocentric velocity (km/s)",
-    title="Southern half",
-)
+for ax in axes[:, 0]:
+    ax.set(ylabel="Heliocentric velocity (km/s)")
+for ax in axes[1, :]:
+    ax.set(xlabel="Radius (arcsec) from θ$^1$ C")
+fig.tight_layout(h_pad=0.0, w_pad=0.0)
+fig.savefig("../figs/v-hist-quadrant-oiii.pdf")
 ...;
 # -
+
+# Just for interest, we can also do it with the other lines:
+
+# +
+hacube_hdu = fits.open(LUIS_DATA_PATH / "vcube.ha-wcs-csub.fits")[0]
+for qlabel, qmask in quadmasks.items():
+    hists = []
+    edges = []
+    for plane in hacube_hdu.data:
+        mgood = (~m2A) & qmask
+        mgood = mgood & np.isfinite(plane)
+        mgood = mgood & (plane > 0.0)
+        H, e = np.histogram(
+            rad[mgood], 
+            weights=plane[mgood], 
+            bins=radbins,
+        )
+        H0, _ = np.histogram(
+            rad[mgood], 
+            bins=radbins,
+        )
+        hists.append(
+            H / H0#/ np.nanmax(H)
+        )
+    hist_arr = np.stack(hists)
+    hist_arr /= np.nanmax(hist_arr)
+    hist_fine = np.empty((nfv, nr))
+    print(hist_arr.shape, hist_fine.shape)
+
+    for ir in range(nr):
+        hist_fine[:, ir] = np.interp(finevels, vels, hist_arr[:, ir])
+    #hist_arr /= np.nanmean(hist_arr, axis=0, keepdims=True)
+    hist_arr_dict[qlabel] = convolve(hist_fine, kernel)
+
+
+gamma = 6.0
+centers = 0.5 * (radbins[1:] + radbins[:-1])
+levels_hi = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+levels_lo = 0.1 * np.array([1 / 64, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2])
+
+fig, axes = plt.subplots(
+    2, 2, 
+    figsize=(12, 10),
+    sharex=True,
+    sharey=True,
+)
+for qlabel, ax in zip(hist_arr_dict, axes.flat):
+    hist_arr = hist_arr_dict[qlabel]
+    hist_arr[~np.isfinite(hist_arr)] = 0.0
+    print(qlabel, np.nanmax(hist_arr))
+    ax.imshow(
+        hist_arr**(1/gamma), 
+        origin="lower",
+        extent=[radbins[0], radbins[-1], vels[0], vels[-1]],
+        vmin=0, vmax=1.0,
+        cmap="gray",
+    )
+    ax.contour(
+        centers,
+        finevels,
+        hist_arr, 
+        levels=levels_hi,
+        colors="k",
+        linewidths=0.5 + 0.1*np.arange(len(levels_hi)),
+    )
+    ax.contour(
+        centers,
+        finevels,
+        hist_arr, 
+        levels=levels_lo,
+        colors="w",
+        linewidths=0.5,
+    )
+    ax.plot(
+        centers_co, 
+        Vco_dict[qlabel], 
+        lw=3, color="k", linestyle="dashed",
+    )
+
+    ax.set_aspect(1.)
+    ax.set(
+        ylim=[-75, 75],
+    )
+    ax.set_title(f"{qlabel} quadrant", y=0, pad=20, color="w")
+
+for ax in axes[:, 0]:
+    ax.set(ylabel="Heliocentric velocity (km/s)")
+for ax in axes[1, :]:
+    ax.set(xlabel="Radius (arcsec) from θ$^1$ C")
+fig.tight_layout(h_pad=0.0, w_pad=0.0)
+fig.savefig("../figs/v-hist-quadrant-ha.pdf")
+...;
+
+# +
+n2cube_hdu = fits.open(LUIS_DATA_PATH / "vcube.nii-wcs-csub.fits")[0]
+wspec_nii = WCS(n2cube_hdu.header).spectral
+vels_nii = wspec_nii.array_index_to_world(range(nv)).value
+for qlabel, qmask in quadmasks.items():
+    hists = []
+    edges = []
+    for plane in n2cube_hdu.data:
+        mgood = (~m2A) & qmask
+        mgood = mgood & np.isfinite(plane)
+        mgood = mgood & (plane > 0.0)
+        H, e = np.histogram(
+            rad[mgood], 
+            weights=plane[mgood], 
+            bins=radbins,
+        )
+        H0, _ = np.histogram(
+            rad[mgood], 
+            bins=radbins,
+        )
+        hists.append(
+            H / H0#/ np.nanmax(H)
+        )
+    hist_arr = np.stack(hists)
+    hist_arr /= np.nanmax(hist_arr)
+    hist_fine = np.empty((nfv, nr))
+    print(hist_arr.shape, hist_fine.shape)
+
+    for ir in range(nr):
+        hist_fine[:, ir] = np.interp(finevels, vels_nii, hist_arr[:, ir])
+    #hist_arr /= np.nanmean(hist_arr, axis=0, keepdims=True)
+    hist_arr_dict[qlabel] = convolve(hist_fine, kernel)
+
+
+gamma = 6.0
+centers = 0.5 * (radbins[1:] + radbins[:-1])
+levels_hi = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+levels_lo = 0.1 * np.array([1 / 64, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2])
+
+fig, axes = plt.subplots(
+    2, 2, 
+    figsize=(12, 10),
+    sharex=True,
+    sharey=True,
+)
+for qlabel, ax in zip(hist_arr_dict, axes.flat):
+    hist_arr = hist_arr_dict[qlabel]
+    hist_arr[~np.isfinite(hist_arr)] = 0.0
+    print(qlabel, np.nanmax(hist_arr))
+    ax.imshow(
+        hist_arr**(1/gamma), 
+        origin="lower",
+        extent=[radbins[0], radbins[-1], vels[0], vels[-1]],
+        vmin=0, vmax=1.0,
+        cmap="viridis",
+    )
+    ax.contour(
+        centers,
+        finevels,
+        hist_arr, 
+        levels=levels_hi,
+        colors="k",
+        linewidths=0.5 + 0.1*np.arange(len(levels_hi)),
+    )
+    ax.contour(
+        centers,
+        finevels,
+        hist_arr, 
+        levels=levels_lo,
+        colors="w",
+        linewidths=0.5,
+    )
+    ax.plot(
+        centers_co, 
+        Vco_dict[qlabel], 
+        lw=3, color="k", linestyle="dashed",
+    )
+
+    ax.set_aspect(1.)
+    ax.set(
+        ylim=[-75, 75],
+    )
+    ax.set_title(f"{qlabel} quadrant", y=0, pad=20, color="w")
+
+for ax in axes[:, 0]:
+    ax.set(ylabel="Heliocentric velocity (km/s)")
+for ax in axes[1, :]:
+    ax.set(xlabel="Radius (arcsec) from θ$^1$ C")
+fig.tight_layout(h_pad=0.0, w_pad=0.0)
+fig.savefig("../figs/v-hist-quadrant-nii.pdf")
+...;
+# -
+
+# It would be good to compare these with the CO
 
 
