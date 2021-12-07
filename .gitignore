@@ -1,4 +1,4 @@
-/notebooks/.ipynb_checkpoints/*.ipynb
+notebooks/.ipynb_checkpoints/*.ipynb
 /paper/auto/
 *.aux
 *.blg
