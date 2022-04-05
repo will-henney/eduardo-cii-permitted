@@ -10,3 +10,4 @@ notebooks/.ipynb_checkpoints/*.ipynb
 *.synctex.gz
 data/orig-muse
 notebooks/.ipynb_checkpoints
+/.DS_Store

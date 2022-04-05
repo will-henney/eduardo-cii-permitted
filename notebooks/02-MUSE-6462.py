@@ -170,7 +170,7 @@ for wav, label in line_ids.items():
         arrowprops=dict(arrowstyle="-"),
     )
     toggle *= -1
-    
+
 
 # ## Deal with the sky
 
@@ -211,7 +211,7 @@ for wav, label in line_ids.items():
         arrowprops=dict(arrowstyle="-"),
     )
     toggle *= -1
-    
+
 
 # Yes, that looks a lot better!  So most of the line IDs are not detected at all. It looks very clean around the C II line, with the possible exception of Fe II.  Then, to the red we have a possible detection of the N I multiplet at 6485 and O II at 6502
 
@@ -435,6 +435,7 @@ ax.set(
 # Looks good! Now zoom in.
 
 NWIN = 100
+kfull = np.arange(nwavs)
 window_slice = slice(k0_6151 - (NWIN//2), k0_6151 + (NWIN//2) + 1)
 window_cube = fullcube_nosky[window_slice, ...]
 window_wavs = wavs[window_slice]
@@ -867,7 +868,7 @@ window_wavs = wavs[window_slice]
 window_median = np.median(window_cube, axis=(1, 2))
 window_mean = np.mean(window_cube, axis=(1, 2))
 
-# + jupyter={"source_hidden": true} tags=[]
+# + tags=[]
 fig, ax = plt.subplots(figsize=(12, 4))
 ax.plot(window_wavs, window_mean, alpha=0.7, linewidth=0.8)
 ax.plot(window_wavs, window_median)
@@ -989,6 +990,7 @@ fig.colorbar(im, ax=axes)
 # Also try taking a narrower window of 4 pixels to see if that improves the signal to noise. 
 #
 
+cii6780_xmap = (fullcube_nosky[1166:1170, ...] - cont_map_678X).sum(axis=0)
 cii6787_xmap = (fullcube_nosky[1173:1177, ...] - cont_map_678X).sum(axis=0)
 cii6792_xmap = (fullcube_nosky[1179:1183, ...] - cont_map_678X).sum(axis=0)
 
@@ -1221,14 +1223,14 @@ fig.colorbar(im, ax=axes);
 #
 # If we ignore all that and just look at the values in the recombination emission near the bright bar, then we find 6780+/6462 is about 
 
-# + jupyter={"source_hidden": true} tags=[]
+# + tags=[]
 select_mask = ~mask & (7000 * cii_xmap > 0.5 * ha_map)
 ratio = (cii6780_xmap + cii6787_xmap)[select_mask].sum()
 ratio /= cii_xmap[select_mask].sum()
 ratio
 
-# + jupyter={"source_hidden": true} tags=[]
-So about 0.3
+# + [markdown] tags=[]
+# So about 0.3
 # -
 
 # # Compare with the redder lines: 3d-3p $\lambda\lambda$7231, 7236
@@ -1297,7 +1299,7 @@ ratio = (
 ratio[mask] = np.nan
 im = ax.imshow(
     ratio, 
-    vmin=0.4, vmax=0.75, 
+    vmin=0.4, vmax=0.8, 
     origin="lower", 
     cmap="viridis"
 )
@@ -1443,5 +1445,128 @@ ax.set_title(
 # To make further progress, I need to get everything on the same grid.  
 #
 # For instance, I can repeat the above steps for the full-resolution cube. 
+
+# *Update: 2022-04-04*   What if we subtracted off 0.5 x 7231 instead 
+# of taking the ratio. That might be less noisy
+
+fig, ax = plt.subplots(
+    figsize=(12,9),
+    subplot_kw=dict(projection=WCS(cii7236_hdu.header)),
+)
+sub_map = (cii7231_multimap - 0.5 * cii7236_multimap) / ha_multimap
+im = ax.imshow(
+    sub_map, 
+    vmin=0.0, vmax=5 * np.median(sub_map),
+    origin="lower", 
+    cmap="gray"
+)
+fig.colorbar(im, ax=ax)
+ax.set(xlabel="RA (J2000)", ylabel="Dec (J2000)")
+ax.set_title(
+    "(C II λ7231 - 0.5 λ7236) / Hα λ6563", 
+    pad=12,
+    y=0.0,
+    fontweight="bold",
+    color="w",
+)
+...;
+
+# OK, this ix very noisy and does not look significantly better than  what we had before by summing the lines. 
+
+# ## 3-color image of C II and Ha
+
+from astropy.visualization import simple_norm
+
+gamma = 1.1
+gamma_r = 1.5
+imstack = np.stack(
+    [
+        (ha_multimap  / 45_000_000) ** (1.0 / gamma_r),
+        (cii7236_multimap / 30_000) ** (1.0 / gamma),
+        (cii7231_multimap / 17_000) ** (1.0 / gamma),
+    ],
+    axis=-1,
+)
+fig, ax = plt.subplots(
+    figsize=(11,9),
+    subplot_kw=dict(projection=WCS(cii7236_hdu.header)),
+)
+im = ax.imshow(
+    imstack, 
+    origin="lower", 
+)
+ax.set(xlabel="RA (J2000)", ylabel="Dec (J2000)")
+ax.set_title(
+    "        Hα λ6563", 
+    loc="left",
+    pad=12,
+    y=0.0,
+    fontweight="bold",
+    color=(1.0, 0.5, 0.5),
+)
+ax.set_title(
+    "C II λ7236", 
+    loc="center",
+    pad=12,
+    y=0.0,
+    fontweight="bold",
+    color=(0.5, 1.0, 0.5),
+)
+ax.set_title(
+    "C II λ7231        ", 
+    loc="right",
+    pad=12,
+    y=0.0,
+    fontweight="bold",
+    color=(0.5, 0.5, 1.0),
+)
+fig.tight_layout(rect=[0.08, 0.07, 1.0, 1.0])
+fig.savefig("../figs/rgb-ha-cii-7236-7231.pdf")
+...;
+from astropy.visualization import make_lupton_rgb
+
+fig, ax = plt.subplots(
+    figsize=(11,9),
+    subplot_kw=dict(projection=WCS(cii7236_hdu.header)),
+)
+im = ax.imshow(
+    make_lupton_rgb(
+        imstack[..., 0],
+        imstack[..., 1],
+        imstack[..., 2],
+        Q=1.5,
+        stretch=0.75,
+    ),
+    origin="lower", 
+)
+ax.set(xlabel="RA (J2000)", ylabel="Dec (J2000)")
+ax.set_title(
+    "    Hα λ6563", 
+    loc="left",
+    pad=12,
+    y=0.0,
+    fontweight="bold",
+    color=(1.0, 0.5, 0.5),
+)
+ax.set_title(
+    "C II λ7236", 
+    loc="center",
+    pad=12,
+    y=0.0,
+    fontweight="bold",
+    color=(0.5, 1.0, 0.5),
+)
+ax.set_title(
+    "C II λ7231    ", 
+    loc="right",
+    pad=12,
+    y=0.0,
+    fontweight="bold",
+    color=(0.5, 0.5, 1.0),
+)
+fig.tight_layout(rect=[0.08, 0.07, 1.0, 1.0])
+fig.savefig("../figs/rgb-lupton-ha-cii-7236-7231.pdf")
+...;
+
 
 

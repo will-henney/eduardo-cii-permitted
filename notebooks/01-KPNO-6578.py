@@ -715,18 +715,22 @@ fig, axes = plt.subplots(
     sharey=True,
     constrained_layout=False,
 )
+
+def lsr_fmt(vhel):
+    "Convert helio to lsr and format as a label string"
+    return fr"$V_\mathrm{{LSR}} = {vhel - 18:+02d}$ km/s"
 axes[0, 0].imshow(rgbim3)
-axes[0, 0].set_title("$+48$", y=0, color="w")
+axes[0, 0].set_title(lsr_fmt(+48), y=0, color="w")
 axes[0, 1].imshow(rgbim)
-axes[0, 1].set_title("$+24$", y=0, color="w")
+axes[0, 1].set_title(lsr_fmt(+24), y=0, color="w")
 axes[0, 2].imshow(rgbim2)
-axes[0, 2].set_title("$+0$", y=0, color="w")
+axes[0, 2].set_title(lsr_fmt(+0), y=0, color="w")
 axes[1, 0].imshow(rgbim4)
-axes[1, 0].set_title("$-24$", y=0, color="w")
+axes[1, 0].set_title(lsr_fmt(-24), y=0, color="w")
 axes[1, 1].imshow(rgbim5)
-axes[1, 1].set_title("$-48$", y=0, color="w")
+axes[1, 1].set_title(lsr_fmt(-48), y=0, color="w")
 axes[1, 2].imshow(rgbim6)
-axes[1, 2].set_title("$-72$", y=0, color="w")
+axes[1, 2].set_title(lsr_fmt(-72), y=0, color="w")
 for ax in axes[:, 1:].flat:
     ax.coords[1].set_ticklabel_visible(False)
     ax.coords[1].set_axislabel("")
@@ -758,7 +762,7 @@ fig.set
 
 # Radius of each pixel from th1C
 
-# + jupyter={"source_hidden": true} tags=[]
+# + tags=[]
 wcube = WCS(o3cube_hdu.header).celestial
 ii, jj = np.meshgrid(range(nx), range(ny))
 c = wcube.array_index_to_world(jj, ii)
@@ -1035,6 +1039,8 @@ mNW = pa >= 270 * u.deg
 quadmasks_co = {"NE": mNE, "NW": mNW, "SE": mSE, "SW": mSW}
 radbins_co = np.linspace(0.0, 170.0, 86)
 
+# *New: 2022-04-04*  We will keep this in the LSR frame, since that would be better for the paper
+
 Vco_dict = {}
 for qlabel, qmask in quadmasks_co.items():
     mgood = qmask
@@ -1049,17 +1055,23 @@ for qlabel, qmask in quadmasks_co.items():
         rad_co[mgood], 
         bins=radbins_co,
     )
-    Vco_dict[qlabel] = 18.1 + H / H0
+    # Vco_dict[qlabel] = 18.1 + H / H0
+    Vco_dict[qlabel] = H / H0    
 
 centers_co = 0.5 * (radbins_co[1:] + radbins_co[:-1])
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(8, 4))
 for qlabel, V in Vco_dict.items():
     ax.plot(centers_co, V, label=qlabel)
-ax.legend()
+ax.legend(ncol=2, title="Mean $^{13}$CO velocity")
+ax.set(
+    xlabel="Radius, arcsec",
+    ylabel=r"$V_\mathrm{LSR}$, km/s",
+    ylim=[6, 11],
+)
 ...;
 
-
+#
 
 # ## Final version with quadrants
 
@@ -1074,6 +1086,10 @@ assert np.alltrue(mNE | mSE | mSW | mNW)
 quadmasks = {"NE": mNE, "NW": mNW, "SE": mSE, "SW": mSW}
 
 # We will regrid in velocity onto a finer 1 km/s spacing, using linear interpolation.  And then convolve with a Gaussian to smooth out the sharp corners to make the contours look better.
+
+# Change to LSR velocities
+
+vels -= 18.1
 
 from astropy.convolution import Gaussian2DKernel, convolve
 kernel = Gaussian2DKernel(x_stddev=0.75)
@@ -1163,12 +1179,12 @@ for qlabel, ax in zip(hist_arr_dict, axes.flat):
     #ax.plot(centers, vmeans, color="c", lw=3)
     ax.set_aspect(1.)
     ax.set(
-        ylim=[-75, 75],
+        ylim=[-95, 60],
     )
     ax.set_title(f"{qlabel} quadrant", y=0, pad=20, color="w")
 
 for ax in axes[:, 0]:
-    ax.set(ylabel="Heliocentric velocity (km/s)")
+    ax.set(ylabel="LSR velocity (km/s)")
 for ax in axes[1, :]:
     ax.set(xlabel="Radius (arcsec) from θ$^1$ C")
 fig.tight_layout(h_pad=0.0, w_pad=0.0)
@@ -1256,12 +1272,12 @@ for qlabel, ax in zip(hist_arr_dict, axes.flat):
 
     ax.set_aspect(1.)
     ax.set(
-        ylim=[-75, 75],
+        ylim=[-95, 60],
     )
     ax.set_title(f"{qlabel} quadrant", y=0, pad=20, color="w")
 
 for ax in axes[:, 0]:
-    ax.set(ylabel="Heliocentric velocity (km/s)")
+    ax.set(ylabel="LSR velocity (km/s)")
 for ax in axes[1, :]:
     ax.set(xlabel="Radius (arcsec) from θ$^1$ C")
 fig.tight_layout(h_pad=0.0, w_pad=0.0)
@@ -1271,7 +1287,7 @@ fig.savefig("../figs/v-hist-quadrant-ha.pdf")
 # +
 n2cube_hdu = fits.open(LUIS_DATA_PATH / "vcube.nii-wcs-csub.fits")[0]
 wspec_nii = WCS(n2cube_hdu.header).spectral
-vels_nii = wspec_nii.array_index_to_world(range(nv)).value
+vels_nii = wspec_nii.array_index_to_world(range(nv)).value - 18.1
 for qlabel, qmask in quadmasks.items():
     hists = []
     edges = []
@@ -1348,19 +1364,17 @@ for qlabel, ax in zip(hist_arr_dict, axes.flat):
 
     ax.set_aspect(1.)
     ax.set(
-        ylim=[-75, 75],
+        ylim=[-95, 60],
     )
     ax.set_title(f"{qlabel} quadrant", y=0, pad=20, color="w")
 
 for ax in axes[:, 0]:
-    ax.set(ylabel="Heliocentric velocity (km/s)")
+    ax.set(ylabel="LSR velocity (km/s)")
 for ax in axes[1, :]:
     ax.set(xlabel="Radius (arcsec) from θ$^1$ C")
 fig.tight_layout(h_pad=0.0, w_pad=0.0)
 fig.savefig("../figs/v-hist-quadrant-nii.pdf")
 ...;
 # -
-
-# It would be good to compare these with the CO
 
 
