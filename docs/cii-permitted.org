@@ -1,9 +1,62 @@
 
 * Plan of action for C II
 
-** 
+** Summary of project status on revisiting [2022-04-04 Mon]
++ I was reminded of this project by Eduardo's visit
++ I last worked on it in 2021 December - 4 months ago
+*** Overview
++ There are 3 parts to project, as I see it:
+  1. Observations of C II fluorescent and recombination components
+     - SPM spectra of C II 6578 with velocity resolution
+     - MUSE spectra of many lines
+     - /possibly/ UVES spectra from Eduardo and various from literature
+       - H II regions and planetary nebulae
+     - PPAK spectra from Manu project
+       - this has spatially spectra of the 4267 pure recomb line
+       - but data analysis and calibration is more problematic
+  2. Observations of the reverse Trapezium shell in [O III] 5007
+     - This is a region of radius approx 10 arcsec around th1C, where the [O III] mean velocity is the same as 13CO velocity. Roughly +9 km/s LSR
+     - Surrounded by a ring that is bright at 0 to +4 km/s LSR
+     - The ring can be seen as peak in the linewidth maps in García-Díaz & Henney 2008
+     - The interpretation is that this is where the stellar wind interacts with the ionized gas
+       - The back side is a stagnation region, where the ionized gas cannot flow towards us because of the obstacle of the stellar winds
+       - The shell is where it is free to flow towards us
+     - There is no apparent blueshifted near side of the shell, suggesting that the wind may be free to escape on that side
+       - But there is the strange pattern of blue-shifted high velocity flows, first pointed out by Meaburn & Massey, which might be related
+  3. Interpretation of the effect of stellar wind on nebula
+     - Is it plausible that the wind may be driving the large-scale shell seen in FIR C II lines, as claimed by Pabst et al?
+       - Over much of the large-scale nebula shell (0.5 degree scale), especially in the SW, there is a blueshifted component at velocities out to -5 km/s LSR
+       - The velocity structure seems a coherent half-shell, returning to the systemic velocity of +8 at the edges
+       - Is this the same as one of the Veil components?
+         - Not really. The strongest absorption components (vdW 1989) are not shifted by so much from the background cloud: A (+6 km/s) and B (+4 km/s).  Only the much weaker C (-2 km/s) is perhaps similar.
+         - Component C is found S of Bar and W of core, so that would make it a good candidate. Also has a large density (2000 to 6500 pc) and small line-of-sight extent (0.1 pc).
+         - vdW 2013 has more detail and also includes emission components, but the area covered is quite small compared with the entire shell and does not extend far south enough to the regions with most interesting splitting in C II
+         - It turns out that the H I observations are not as useful as they might be, since they include a whole lot of emission and absorption from gas that may be a long way outside the nebula, whereas the C II FIR line is concentrated in a narrow zone of the PDR
+       - Starting at Trapezium and extending to the East for a few arcmin, is another partial shell in C II emission, which has a blue-shifted component 
 
 
+
+*** Upcoming tasks for individual parts
+
+**** C II observations
+
+***** TODO Prepare figures of SPM results
++ Specifically, the comparison of kinematics between [O III] and C II
+  + It is somewhat surprising that they are so similar
+
+***** TODO Redo the weak lines using the full-resolution cube
++ This is the first 10 sections of
+
+
+
+**** Nature of the Big Arc
++ *New* [2022-04-05 Tue] I now think that the Big Arc /might/ be illuminated by th2A
+  + The main evidence for this is that the 7236/7231 ratio is the same (about 0.75) in the Big Arc as near th2A, whereas it is about 0.65 in the Trapezium shell, and 0.55 in the recombination-dominated zones
+  + However, HH 202 also has the same ratio, and I don't think *that* is illuminated by th2A, do I?
+  + Other evidence against this idea is that the ionization is so high (lots of [O III])
++ There is HI emission from the Big Arc, sort of
+  + It is less blueshifted, peaking at V_LSR = -15 km/s, as opposed to -22 km/s for the oiii
+  + And the spatial coincidence is not perfect either - it overlaps the Bar a bit in the east
 ** General things to look at
 *** Effect of illuminating spectrum
 + We have the comparison between the Trapezium region and the \theta^2 A region for Orion
@@ -11,7 +64,7 @@
     + 7236 has broad peak to SW of th2A
       + Region of giant bow in front of HH 204
         + But maybe not related
-    + 6578 shows the sam but also more extended emission to the E
+    + 6578 shows the same but also more extended emission to the E
       + Possibly related th2B?
 + Comparison with other H II regions?
 *** What is revealed by the fluorescent distribution of C II in Orion?
