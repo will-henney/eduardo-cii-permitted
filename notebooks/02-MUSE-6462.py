@@ -1290,18 +1290,18 @@ from scipy.signal import medfilt2d
 
 fig, ax = plt.subplots(figsize=(12,10))
 
-mask =  cii7236_map < 0.1 * np.median(cii7236_map)
-smooth = 0
-ratio = (
-    medfilt2d(cii7231_map - sky7231, 16 * smooth + 1) 
-    / medfilt2d(cii7236_map - sky7236, 16 * smooth + 1)
-)
+smooth = 1
+top = medfilt2d(cii7231_map - sky7231, int(16 * smooth + 1)) 
+bot = medfilt2d(cii7236_map - sky7236, int(16 * smooth + 1))
+mask = top < 1.0 * np.nanmedian(top)
+
+ratio = top / bot
 ratio[mask] = np.nan
 im = ax.imshow(
     ratio, 
-    vmin=0.4, vmax=0.8, 
+    vmin=0.5, vmax=0.8, 
     origin="lower", 
-    cmap="viridis"
+    cmap="inferno"
 )
 fig.colorbar(im, ax=ax)
 ax.set_title("C II 7231 / 7236");
@@ -1524,7 +1524,6 @@ fig.tight_layout(rect=[0.08, 0.07, 1.0, 1.0])
 fig.savefig("../figs/rgb-ha-cii-7236-7231.pdf")
 ...;
 from astropy.visualization import make_lupton_rgb
-
 fig, ax = plt.subplots(
     figsize=(11,9),
     subplot_kw=dict(projection=WCS(cii7236_hdu.header)),
@@ -1567,6 +1566,7 @@ ax.set_title(
 fig.tight_layout(rect=[0.08, 0.07, 1.0, 1.0])
 fig.savefig("../figs/rgb-lupton-ha-cii-7236-7231.pdf")
 ...;
+
 
 
 
