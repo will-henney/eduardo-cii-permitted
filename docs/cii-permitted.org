@@ -1,4 +1,3 @@
-
 * Plan of action for C II
 
 ** Summary of project status on revisiting [2022-04-04 Mon]
@@ -39,24 +38,43 @@
 *** Upcoming tasks for individual parts
 
 **** C II observations
+The first paper can be just on these
 
+***** TODO Put draft of paper on Overleaf
 ***** TODO Prepare figures of SPM results
 + Specifically, the comparison of kinematics between [O III] and C II
   + It is somewhat surprising that they are so similar
++ But is this really necessary for the first paper, given that we will not be talking about kinematics
 
 ***** TODO Redo the weak lines using the full-resolution cube
-+ This is the first 10 sections of
++ This is the first 10 sections of the notebook
+  + [[file:../notebooks/02-MUSE-6462.ipynb]]
+
+***** TODO Analyze the Manu PPAK data
+- I have all the line fluxes and positions, so it should be relatively easy to create some interpolated maps.
 
 
+
+
+***** TODO Find the place where the UV pumping lines should be absorbed
+- We are probably going to have to run some Cloudy models
+- Find out what the C+ ion fraction is likely to be at the illuminated face as a function of density.
+  - We can make maps of the [Ar IV] density form Manu
+- Work out the cross section for absorption of the driving lines
+  - Why is it that the C II fluorescent lines come from the inner edge, whereas O I fluorescent lines come from the PDR. or at least the bit behind the i-front. 
 
 **** Nature of the Big Arc
-+ *New* [2022-04-05 Tue] I now think that the Big Arc /might/ be illuminated by th2A
++ *New* [2022-04-05 Tue] I now think that the Big Arc /might/ be illuminated by th2A (*I no longer believe this* [2022-04-08 Fri 08:54])
   + The main evidence for this is that the 7236/7231 ratio is the same (about 0.75) in the Big Arc as near th2A, whereas it is about 0.65 in the Trapezium shell, and 0.55 in the recombination-dominated zones
   + However, HH 202 also has the same ratio, and I don't think *that* is illuminated by th2A, do I?
   + Other evidence against this idea is that the ionization is so high (lots of [O III])
 + There is HI emission from the Big Arc, sort of
   + It is less blueshifted, peaking at V_LSR = -15 km/s, as opposed to -22 km/s for the oiii
   + And the spatial coincidence is not perfect either - it overlaps the Bar a bit in the east
++ Big Arc as the sheath of jets
+  + [ ] Where did I last talk about this?
+  + There are some high-velocity flows that can be seen in the blue oiii channel maps, which look like corkscrew jets
+  + 
 ** General things to look at
 *** Effect of illuminating spectrum
 + We have the comparison between the Trapezium region and the \theta^2 A region for Orion
