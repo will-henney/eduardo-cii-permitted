@@ -61,7 +61,9 @@ The first paper can be just on these
 - Find out what the C+ ion fraction is likely to be at the illuminated face as a function of density.
   - We can make maps of the [Ar IV] density form Manu
 - Work out the cross section for absorption of the driving lines
-  - Why is it that the C II fluorescent lines come from the inner edge, whereas O I fluorescent lines come from the PDR. or at least the bit behind the i-front. 
+  - Why is it that the C II fluorescent lines come from the inner edge, whereas O I fluorescent lines come from the PDR. or at least the bit behind the i-front.
+  - [[id:754B51D0-E57F-4870-A1FA-031B8529F62A][What are the relevant pumping lines?]] is the section where I do this
+- Do I have a good term diagram for C II anywhere, that has the relevant lines?
 
 **** Nature of the Big Arc
 + *New* [2022-04-05 Tue] I now think that the Big Arc /might/ be illuminated by th2A (*I no longer believe this* [2022-04-08 Fri 08:54])
@@ -157,7 +159,10 @@ The first paper can be just on these
 + 4267 (recomb, mainly)
   + 3d .^{2}D \to 4f .^{2}F^o (L = 3)
 *** What are the relevant pumping lines?
-+ 7231, 7236 can have their upper level directly pumped from the ground
+:PROPERTIES:
+:ID:       754B51D0-E57F-4870-A1FA-031B8529F62A
+:END:
++ 7231, 7236 can have their upper level (2d) directly pumped from the ground
   + 2p .^{2}P^o \to 3d .^{2}D : 687 \AA
     #+begin_example
           : -LAB-WAVL-ANG-VAC-|-SPC--|TT|--------CONFIGURATION--------|-TERM--|-J_i-J_k-|--A_ki---|-TPF-|--LVL-EN--CM-1---|-REF---|
@@ -165,8 +170,24 @@ The first paper can be just on these
           :     687.3453        C II  E1         2s2.2p-2s2.3d         2Po-2D  3/2 - 5/2 2.880e+09    24 63.42 - 145550.70 ASD
           :     687.3521        C II  E1         2s2.2p-2s2.3d         2Po-2D  3/2 - 3/2 4.810e+08    24 63.42 - 145549.27 ASD
     #+end_example
-+ 6578 should mainly be populated by the same route
-  + But also via 4s
++ 6578 (3p) should mainly be populated by the same route
+  + Cannot be directly from ground (2p), so routes could be
+    + 2p -UV*687-> 3d -7231-> 3p -6578-> 3s
+    + 2p -UV*636-> 4s -3920-> 3p -6578-> 3s
+    + Or 4d, 5s, 5d, etc
+  + [X] But also via 4s - need to find details for that line
+    + There is a doublet 3919,21
+    + Perhaps it is seen in the PPAK data
+    + In principle, the 6578 line should be the sum of 7231 plus all the other ways of getting to 3p, of which 3920 is probably the most important, but there may also be 4d to 3p, and then 5s, 5d, etc
++ 4267 has a small fluorescent contribution too
+  + upper level is 4f, which we can reach from 5d, which can be reached directly from ground 2p
+  + 2p -UV*-> 5d -1.04 micron-> 4f -4267-> 3d -7231-> 3p -6578-> 3s for instance
+  + So this route will also be a minor contribution to the 7231 and 6578 lines too
+  + I am assuming that 4d is below 4f - need to check that
++ 6460 will have almost no fluorescent contribution since its upper level is 6g
+  + Can be reached from 7f, which can be reached from 8d, which can be pumped directly from ground
+  + And the cross section for 2p-8d will be much less than for 2p-5d
+  + Not to mention that the branching ratios for 8d-7f-6g will also be small
 *** Recombination contribution to spectrum
 **** Estimate of 4267+ / 6578+ from recombination
 ***** Estimate based on Escalante:2012a
@@ -203,6 +224,9 @@ Effective recombination coefficients (units 1e-14 cm^3/s) for different T (units
     + I(426.7) / I(658.0) = (2.76e+1 / 426.7) / (3.29e+1 / 658.0) = 1.2936
   + Calculation for Case A at 1e4 K
     + I(426.7) / I(658.0) = (2.73e+1 / 426.7) / (6.20e+0 / 658.0) = 6.79
++ [2022-04-13 Wed 14:03] But again, how do we account for the different lines of the multiplet?
+  + For 426.7, they are blended together in the observations I am guessing
+  + Whereas for 658.0 they would be resolvable were it not for the [N II] line, which masks the 6582.9 component 
 ** Datasets to use
 *** TODO KPNO Orion
 + This has C II 6578

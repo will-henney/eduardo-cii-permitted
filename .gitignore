@@ -11,3 +11,5 @@ notebooks/.ipynb_checkpoints/*.ipynb
 data/orig-muse
 notebooks/.ipynb_checkpoints
 /.DS_Store
+paper2/wind-orion.pdf
+paper2/wind-orion.log
